@@ -1,4 +1,6 @@
-map SNPs to order and disorder database
+#Mapping-disorder
+
+Map SNPs to order and disorder database
 
 Intrinsically disordered regions (IDRs) led to different functions in many of the eukaryotic proteins.
 Mapping SNPs to disordered region is an important feature for different SNPs to check their role in diseases progression.
