@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_curve
 from sklearn.metrics import matthews_corrcoef, precision_score, recall_score
 from sklearn.metrics import f1_score, confusion_matrix
+from statistics import mean 
 
 #------------------------------------------
 #           Data pre-processing
@@ -41,10 +42,16 @@ print(df)
 
 # add a column indicating the prediction result (0 or 1)
 p_values = df['P-value']
+               # convert to original values from -log values  
 p_values_binary = [int(p_value <= 0.05) for p_value in p_values]
 df = df.drop(columns = ['P-value'])
 df['classification_result'] = p_values_binary 
 print(df)
+
+# the feature "Gene_expression" is a categorical data with 3 classes:
+# [1: down regulated][2:normal expression][3: upregulated]
+# they need to be convert to one-hot to be well used by the classifier because they are
+# actually not ordinal.
 
 #calculate class weight
 df_pos = df[df['classification_result'] == 1]
@@ -65,7 +72,7 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
 #------------------------------------------
 rf = RandomForestClassifier(n_estimators=1000,
                             max_depth=None,
-                            min_samples_split=100,
+                            min_samples_split=5,
                             random_state=0,
                             max_features = "auto",
                             criterion = "gini",
@@ -73,6 +80,7 @@ rf = RandomForestClassifier(n_estimators=1000,
                             n_jobs = -1)
 
 # list contains dictionarys for each fold
+train_acc_records = []
 val_acc_records = []
 val_precision_records = []
 val_recall_records = []
@@ -94,6 +102,7 @@ for train_index, val_index in skf.split(X, y):
 
     # training performance
     train_acc = rf.score(X_train, y_train)
+    train_acc_records.append(train_acc)
     print('training accuracy:', train_acc)
     
     # validation performance
@@ -136,15 +145,13 @@ for train_index, val_index in skf.split(X, y):
     thresholds_records.append(thresholds)
 
 #------------------------------------------
-#           Gradient Boosting 
+#           Post-processing 
 #------------------------------------------
+# averaged validation metrics over folds
+print('averaged training accuracy:', mean(train_acc_records))
+print('averaged validation accuracy:', mean(val_acc_records))
+print('averaged validation precision:', mean(val_precision_records))
+print('averaged validation recall:', mean(val_recall_records))
+print('averaged validation MCC:', mean(val_mcc_records))
 
-
-#------------------------------------------
-#           Neural Network
-#------------------------------------------
-#print('Training a neural network...')
-
-# convert predicted p-values to classification results
-# metrics for training
-# metrics for vlication
+# rank the features
