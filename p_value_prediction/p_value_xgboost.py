@@ -13,7 +13,7 @@ from statistics import mean
 #------------------------------------------
 #           Data pre-processing
 #------------------------------------------
-p_value_threshold = 0.05
+p_value_threshold = 0.005
 print('threshold for p-value is set to ', p_value_threshold)
 df = pd.read_csv("../data/NIH.csv", delim_whitespace=True) # read data 
 
@@ -48,7 +48,7 @@ df['Gene_expression'] = gene_expressions
 # add a column indicating the prediction result (0 or 1)
 p_values = df['P-value']
 p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
-p_values_binary = [int(p_value <= 0.05) for p_value in p_values]
+p_values_binary = [int(p_value <= p_value_threshold) for p_value in p_values]
 df = df.drop(columns = ['P-value'])
 df['classification_result'] = p_values_binary 
 print(df)
