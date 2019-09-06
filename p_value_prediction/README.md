@@ -11,5 +11,6 @@ Machine learning on the SNPs datasets. Those two datasets are NIH and michailidu
 
 ## XGBoost on MGDA
 1. ```final_michailidu_genenames_disease_association``` does not contain "Gene_expression".
+2. Model performance is bad. Possible causes: 1. redundant bad feature introducing noises. 2. too many trees introducing overfitting. Need to do some study on hyper-parameter tuning.
 
 ## Random forest on MGDA
