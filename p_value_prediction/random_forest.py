@@ -52,7 +52,6 @@ def feature_rank(feature_importance_records, column_names):
     plt.ylabel("importance")
     plt.title("Feature importances")
     plt.xticks(x_pos, column_names, rotation=35, ha='right')
-    plt.show()
 
 if __name__ == "__main__":
     args = get_args()
@@ -151,7 +150,7 @@ if __name__ == "__main__":
         if dataset == 'NIH':
             rf = RandomForestClassifier(n_estimators=1000,
                                         max_depth=None,
-                                        min_samples_split=5,
+                                        min_samples_split=2,
                                         random_state=0,
                                         max_features = "auto",
                                         criterion = "gini",
@@ -245,3 +244,5 @@ if __name__ == "__main__":
 
     # rank the features
     feature_rank(feature_importance_records, column_names)
+    plt.savefig('./figures/random_forest_' + dataset + '_use_gene_expression_' + use_gene_expression + '.png')
+    plt.show()
