@@ -23,6 +23,10 @@ def get_args():
                          default = 'True',
                          required = False,
                          choices = ['True', 'False'])
+
+    parser.add_argument('p_value_th',
+                        default = 0.05,
+                        required = False)
     return parser.parse_args()
 
 def feature_rank(feature_importance_records, column_names):
@@ -57,14 +61,12 @@ if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
     use_gene_expression = args.use_gene_expression
+    p_value_threshold = args.p_value_th
     print('dataset:', dataset)
-
+    print('threshold for p-value is set to ', p_value_threshold)
     #------------------------------------------
     #           Data pre-processing
     #------------------------------------------
-    p_value_threshold = 0.05
-    print('threshold for p-value is set to ', p_value_threshold)
-
     if dataset == 'NIH':
         df = pd.read_csv("../data/NIH_SNPs_features.csv", delim_whitespace=True)
         data_num = df.shape[0]
@@ -105,7 +107,7 @@ if __name__ == "__main__":
     # add a column indicating the prediction result (0 or 1)
     p_values = df['p_value']
     p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
-    p_values_binary = [int(p_value <= 0.05) for p_value in p_values]
+    p_values_binary = [int(p_value <= p_value_threshold) for p_value in p_values]
     df = df.drop(columns = ['p_value'])
     df['classification_result'] = p_values_binary 
     print(df)
