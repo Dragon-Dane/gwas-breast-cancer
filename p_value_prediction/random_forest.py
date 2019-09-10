@@ -10,6 +10,7 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import matthews_corrcoef, precision_score, recall_score
 from sklearn.metrics import f1_score, confusion_matrix
 from statistics import mean 
+import matplotlib.pyplot as plt
 
 def get_args():
     parser = argparse.ArgumentParser('python')
@@ -17,11 +18,46 @@ def get_args():
                         default = 'NIH',
                         required = False,
                         choices = ['NIH', 'ERneg', 'ERpos'])
+
+    parser.add_argument('-use_gene_expression',
+                         default = 'True',
+                         required = False,
+                         choices = ['True', 'False'])
     return parser.parse_args()
+
+def feature_rank(feature_importance_records, column_names):
+    """
+    Visualize the feature importances.
+    feature_importance_records: list containing feature importances from
+    5-fold cross-validation
+    """
+    feature_importance_records = np.array(feature_importance_records)
+    avg_feature_importance = np.mean(feature_importance_records, axis=0)
+    column_names = column_names[:-1]
+
+    # sort the feature importance
+    feature_importance_with_names = list(zip(column_names,avg_feature_importance))
+    feature_importance_with_names.sort(key = lambda tup: tup[1], reverse=True)
+    #print(feature_importance_with_names)
+    avg_feature_importance = [tup[1] for tup in feature_importance_with_names]
+    column_names = [tup[0] for tup in feature_importance_with_names]
+    #print(avg_feature_importance)
+    #print(column_names)
+
+    x_pos = [i for i, _ in enumerate(avg_feature_importance)]
+    #print(avg_feature_importance.shape, len(column_names), x_pos)
+    plt.figure(figsize=(16,8))
+    plt.bar(x_pos, avg_feature_importance, color='lightseagreen')
+    plt.xlabel("Feature name")
+    plt.ylabel("importance")
+    plt.title("Feature importances")
+    plt.xticks(x_pos, column_names, rotation=35, ha='right')
+    plt.show()
 
 if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
+    use_gene_expression = args.use_gene_expression
     print('dataset:', dataset)
 
     #------------------------------------------
@@ -32,34 +68,40 @@ if __name__ == "__main__":
 
     if dataset == 'NIH':
         df = pd.read_csv("../data/NIH_SNPs_features.csv", delim_whitespace=True)
+        data_num = df.shape[0]
+        df = df[df.p_value != -1] # remove instances with missing p-values (-1's in the table)
+        effective_data_num = df.shape[0]
+        effective_data_ratio = float(effective_data_num/data_num)
+        print('the ratio of effective data:', effective_data_ratio)
     elif dataset == 'ERneg':
         df = pd.read_csv("../data/michailidu_SNPs_features_ERneg.csv", delim_whitespace=True) 
     elif dataset == 'ERpos':
         df = pd.read_csv("../data/michailidu_SNPs_features_ERpos.csv", delim_whitespace=True) 
 
-    df = df[['wildtype_value', 
-             'mutant_value', 
-             'confidence', 
-             'core', 
-             'nis', 
-             'interface', 
-             'hbo', 
-             'sbr', 
-             'aromatic', 
-             'hydrophobic',  
-             'blosum62_mu', 
-             'blosum62_wt', 
-             'helix', 
-             'coil', 
-             'sheet', 
-             'entropy', 
-             'diseases_score', 
-             'disgenet_score', 
-             'malacards_score', 
-             'p_value' 
-             #'gene_exp'
-             ]] #selecting needed columns
-    print(df)
+    column_names = ['wildtype_value', 
+                    'mutant_value', 
+                    'confidence', 
+                    'core', 
+                    'nis', 
+                    'interface', 
+                    'hbo', 
+                    'sbr', 
+                    'aromatic', 
+                    'hydrophobic',  
+                    'blosum62_mu', 
+                    'blosum62_wt', 
+                    'helix', 
+                    'coil', 
+                    'sheet', 
+                    'entropy', 
+                    'diseases_score', 
+                    'disgenet_score', 
+                    'malacards_score', 
+                    'gene_exp',
+                    'p_value']
+    df = df[column_names] #selecting needed columns
+    if use_gene_expression == 'False':
+        df = df.drop(columns = ['gene_exp'])
 
     # add a column indicating the prediction result (0 or 1)
     p_values = df['p_value']
@@ -86,7 +128,7 @@ if __name__ == "__main__":
     # data and label
     X = np.array(df.drop(columns = ['classification_result']))
     y = np.array(df['classification_result'])
-    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
 
     #------------------------------------------
     #           Random Forest 
@@ -100,6 +142,7 @@ if __name__ == "__main__":
     fpr_records = []
     tpr_records = []
     thresholds_records = []
+    feature_importance_records = []
 
     # run the model in a cross-validation manner
     for train_index, val_index in skf.split(X, y):
@@ -115,9 +158,9 @@ if __name__ == "__main__":
                                         class_weight = class_weight,
                                         n_jobs = -1)
         elif dataset == 'ERneg':
-            rf = RandomForestClassifier(n_estimators=1400,
+            rf = RandomForestClassifier(n_estimators=1000,
                                         max_depth=None,
-                                        min_samples_split=5,
+                                        min_samples_split=2,
                                         random_state=0,
                                         max_features = "auto",
                                         criterion = "gini",
@@ -126,7 +169,7 @@ if __name__ == "__main__":
         elif dataset == 'ERpos':
             rf = RandomForestClassifier(n_estimators=1000,
                                         max_depth=None,
-                                        min_samples_split=5,
+                                        min_samples_split=2,
                                         random_state=0,
                                         max_features = "auto",
                                         criterion = "gini",
@@ -185,6 +228,9 @@ if __name__ == "__main__":
         fpr_records.append(fpr)
         tpr_records.append(tpr)
         thresholds_records.append(thresholds)
+
+        feature_importance_records.append(rf.feature_importances_)
+
         print('--------------------------------------------------')
 
     #------------------------------------------
@@ -198,3 +244,4 @@ if __name__ == "__main__":
     print('averaged validation MCC:', mean(val_mcc_records))
 
     # rank the features
+    feature_rank(feature_importance_records, column_names)
