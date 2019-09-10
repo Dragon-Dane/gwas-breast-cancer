@@ -1,0 +1,83 @@
+dataset: ERneg
+threshold for p-value is set to  0.05
+       wildtype_value  mutant_value  ...  gene_exp  classification_result
+0                0.13          0.13  ...       0.0                      0
+1                0.13          0.13  ...       2.0                      0
+2                0.13          0.13  ...       0.0                      0
+3                0.07          0.07  ...       2.0                      0
+4                0.08          0.08  ...       2.0                      0
+...               ...           ...  ...       ...                    ...
+62727            0.06          0.06  ...       0.0                      0
+62728            0.30          0.00  ...       0.0                      0
+62729            0.28          0.00  ...       0.0                      0
+62730            0.16          0.01  ...       0.0                      0
+62731            0.08          0.03  ...       0.0                      0
+
+[62732 rows x 21 columns]
+number of positive samples: 5428
+number of negative samples: 57304
+training the random forest...
+training finished.
+training accuracy: 0.9835010461293215
+number of correct predictions: 12005
+validation accuracy: 0.9568024228899339
+validation precision: 0.7956521739130434
+validation recall: 0.6740331491712708
+validation mcc: 0.7093814597856143
+validation f1: 0.7298105682951148
+validation confusion matrix: [[11273   188]
+ [  354   732]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9840191292218791
+number of correct predictions: 11976
+validation accuracy: 0.954491113413565
+validation precision: 0.7668393782383419
+validation recall: 0.6813996316758748
+validation mcc: 0.6983552265073733
+validation f1: 0.7215992198927353
+validation confusion matrix: [[11236   225]
+ [  346   740]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9843778021321112
+number of correct predictions: 11968
+validation accuracy: 0.9538535107993943
+validation precision: 0.7632398753894081
+validation recall: 0.6767955801104972
+validation mcc: 0.6938799740557573
+validation f1: 0.7174231332357247
+validation confusion matrix: [[11233   228]
+ [  351   735]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9838401147730442
+number of correct predictions: 11982
+validation accuracy: 0.9550454328072693
+validation precision: 0.7762460233297985
+validation recall: 0.6746543778801843
+validation mcc: 0.6996012165270764
+validation f1: 0.7218934911242604
+validation confusion matrix: [[11250   211]
+ [  353   732]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9840596170322992
+number of correct predictions: 12001
+validation accuracy: 0.9566361100039856
+validation precision: 0.775178026449644
+validation recall: 0.7023041474654378
+validation mcc: 0.7144093890724614
+validation f1: 0.7369439071566731
+validation confusion matrix: [[11239   221]
+ [  323   762]]
+--------------------------------------------------
+averaged training accuracy: 0.983959541857731
+averaged validation accuracy: 0.9553657179828297
+averaged validation precision: 0.7754310954640472
+averaged validation recall: 0.681837377260653
+averaged validation MCC: 0.7031254531896566

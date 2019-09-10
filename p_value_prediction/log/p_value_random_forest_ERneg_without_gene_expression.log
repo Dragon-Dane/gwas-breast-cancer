@@ -1,0 +1,83 @@
+dataset: ERneg
+threshold for p-value is set to  0.05
+       wildtype_value  mutant_value  ...  malacards_score  classification_result
+0                0.13          0.13  ...            27.04                      0
+1                0.13          0.13  ...            27.04                      0
+2                0.13          0.13  ...            27.04                      0
+3                0.07          0.07  ...             0.00                      0
+4                0.08          0.08  ...             0.00                      0
+...               ...           ...  ...              ...                    ...
+62727            0.06          0.06  ...             0.00                      0
+62728            0.30          0.00  ...            31.55                      0
+62729            0.28          0.00  ...            31.55                      0
+62730            0.16          0.01  ...            31.55                      0
+62731            0.08          0.03  ...            31.55                      0
+
+[62732 rows x 20 columns]
+number of positive samples: 5428
+number of negative samples: 57304
+training the random forest...
+training finished.
+training accuracy: 0.9832220783102521
+number of correct predictions: 12041
+validation accuracy: 0.9596716346537021
+validation precision: 0.7989690721649485
+validation recall: 0.7136279926335175
+validation mcc: 0.7333889131928548
+validation f1: 0.7538910505836575
+validation confusion matrix: [[11266   195]
+ [  311   775]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9837003088572283
+number of correct predictions: 12025
+validation accuracy: 0.9583964294253606
+validation precision: 0.7775590551181102
+validation recall: 0.7274401473296501
+validation mcc: 0.7294709017638088
+validation f1: 0.7516650808753568
+validation confusion matrix: [[11235   226]
+ [  296   790]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9840589817674604
+number of correct predictions: 12002
+validation accuracy: 0.9565633219096198
+validation precision: 0.7654563297350343
+validation recall: 0.7182320441988951
+validation mcc: 0.7178451677988347
+validation f1: 0.7410926365795724
+validation confusion matrix: [[11222   239]
+ [  306   780]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9836010042641374
+number of correct predictions: 12016
+validation accuracy: 0.9577554599075403
+validation precision: 0.7783350050150452
+validation recall: 0.7152073732718894
+validation mcc: 0.7232168509439513
+validation f1: 0.7454370797310279
+validation confusion matrix: [[11240   221]
+ [  309   776]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9837607348516548
+number of correct predictions: 12030
+validation accuracy: 0.958947787963332
+validation precision: 0.7777777777777778
+validation recall: 0.7354838709677419
+validation mcc: 0.7339889322849362
+validation f1: 0.7560397915679772
+validation confusion matrix: [[11232   228]
+ [  287   798]]
+--------------------------------------------------
+averaged training accuracy: 0.9836686216101466
+averaged validation accuracy: 0.9582669267719109
+averaged validation precision: 0.7796194479621832
+averaged validation recall: 0.7219982856803389
+averaged validation MCC: 0.7275821531968771
