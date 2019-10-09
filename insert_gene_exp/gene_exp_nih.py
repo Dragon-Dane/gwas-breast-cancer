@@ -1,6 +1,7 @@
 import argparse
 import networkx as nx
 import pandas as pd
+from tqdm import tqdm
 
 def get_args():
     parser = argparse.ArgumentParser('python')
@@ -11,7 +12,8 @@ def get_args():
                         help='directory of gene expression graph')
 
     parser.add_argument('-graph_dir',
-                        default='../../data/original/string_ERpos.gexf',
+                        #default='../../data/original/string_ERpos.gexf',
+                        default='../../data/original/example-genexp-neighbours.gexf',
                         required=False,
                         help='directory of the dataset')
 
@@ -22,16 +24,28 @@ def get_args():
                  
     return parser.parse_args()
 
+def get_gene_exp(graph_dict, ensembl_id):
+    """
+    Retrieve the gene expression from the graph according to the ensembl id,
+    then return the corresponding gene expression as integer.  
+    """
+    return int(graph_dict[ensembl_id])
+
 if __name__=="__main__":
     args=get_args()
     graph_dir = args.graph_dir
     data_dir = args.data_dir
     out_dir = args.out_dir
 
-    # read the graph
-    #gene_exp = nx.read_gexf(graph_dir) # read gene expressions as graph
-    #protein_labels = nx.get_node_attributes(gene_exp, "ENSP-ID")
-    #print(protein_labels)
+    gene_exp_graph = nx.read_gexf(graph_dir) # read gene expressions as graph
+    ensembl_ids = nx.get_node_attributes(gene_exp_graph, "ENSP-ID") # get ensemble ids
+    gene_exps = nx.get_node_attributes(gene_exp_graph, "Gene-exp") # get gene expressions
+    ensembl_ids = list(ensembl_ids.values())
+    gene_exps = list(gene_exps.values())
+    #print(ensembl_ids)
+    #print(gene_exps)
+    graph_dict = dict(zip(ensembl_ids, gene_exps)) # put them into dictionary
+    print('number of nodes in original graph:', len(graph_dict))
 
     # read the dataframe from csv file without gene expressions
     df = pd.read_csv(data_dir, delim_whitespace=True)
@@ -60,22 +74,22 @@ if __name__=="__main__":
     df = df[column_names]
     print('number of samples in original dataset:', df.shape[0])    
 
-    # exclude the rows which have missing p-values
-    df = df[df.p_value != -1]
+
+    df = df[df.p_value != -1] # exclude the rows which have missing p-values
     print('number of samples after dropping samples with missing p-values:', df.shape[0])
 
-    # get ENSP-IDs as iterable
-    ensp_ids = list(df['ensembl'])
-    #print(ensp_ids)
+    ensp_ids = list(df['ensembl']) # get ENSP-IDs in the dataset as iterable
 
-    # create an empty list for gene expressions
-    gene_exp_list = []
-    # for each ENSP-ID
-    for ensp_id in ensp_ids:
-        print(ensp_id)
-        # get corresponding gene expression in the graph
-        # add gene expression to list
-    # add the list to dataframe
-    # save the csv file
+    print('Overall progress:')
+    gene_exp_list = [] # create an empty list for gene expressions  
+    with tqdm(total=df.shape[0]) as pbar:
+        for ensp_id in ensp_ids: # for each ENSP-ID
+            gene_exp = get_gene_exp(graph_dict, ensp_id) # get corresponding gene expression in the graph
+            gene_exp_list.append(gene_exp) # add gene expression to list
+            pbar.updata(1)
+    
+    assert(len(gene_exp_list == df.shape[0]))
+    df['gene_exp'] = gene_exp_list # add the list to dataframe
+    df.to_csv(out_dir) # save the csv file
     
     
