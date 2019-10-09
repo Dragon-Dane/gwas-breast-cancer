@@ -87,6 +87,9 @@ if __name__=="__main__":
     df = df[column_names]
     print('number of samples in original dataset:', df.shape[0])    
 
+    print('entries with -1 p-values:')
+    print(df[df.p_value == -1])
+
     df = df[df.p_value != -1] # exclude the rows which have missing p-values
     print('number of samples after dropping samples with missing p-values:', df.shape[0])
 
