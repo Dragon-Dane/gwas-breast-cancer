@@ -1,16 +1,11 @@
 # Developing notes
-Machine learning on the SNPs datasets. Those two datasets are NIH and michailidu genenames disease association (MGDA) respectively. Two tree-based methods are used: XGBoost and random forest.
+Machine learning on the SNPs datasets. Those two datasets are NIH and michailidu genenames disease association. Random forest is used as the classification model.
 
-## XGBoost on NIH
-1. "Gene_expression" is a ordinal feature (1, 2, 3) with missing values (np.nan).
-2. Adding the feature "Gene_expression" actually makes the performance of model worse.
-3. The results when the p-value threshold is 0.005 is better than when it is 0.05.
+## Hyper-parameter tuning
+The code ```p_value_random_forest_tuning``` conducts randomized searching to find optimal combination of hyper-parameters of random forest. The selected hyper-parameters are stored in ```./best_param/``` folder as pickles. 
 
-## Random forest on NIH
-1. Scikit-learn implementation can not handle missing data well, so the feature "Gene_expression" needs to be removed.
+## Model inferencing
+The code ```p_value_random_forest``` load the selected hyper-parameters and perform 5-fold cross validation. 
 
-## XGBoost on MGDA
-1. ```final_michailidu_genenames_disease_association``` does not contain "Gene_expression".
-2. Model performance is bad. Possible causes: 1. redundant bad feature introducing noises. 2. too many trees introducing overfitting. Need to do some study on hyper-parameter tuning.
-
-## Random forest on MGDA
+## Usage
+```./run_me.sh```
