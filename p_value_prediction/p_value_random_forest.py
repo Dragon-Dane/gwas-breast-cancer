@@ -1,9 +1,12 @@
 '''
-Using resgression models to predict p-values according to the features of SNPs.
+Perform 5-fold cross validation and show the classification performance for
+pre-trained random forest classifiers. The pre-trained models are trained by
+random_forest_tuning.py
 '''
 import argparse
 import numpy as np
 import pandas as pd
+import pickle
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_curve
@@ -15,16 +18,16 @@ import matplotlib.pyplot as plt
 def get_args():
     parser = argparse.ArgumentParser('python')
     parser.add_argument('-dataset',
-                        default = 'NIH',
+                        default = 'nih',
                         required = False,
-                        choices = ['NIH', 'ERneg', 'ERpos'])
+                        choices = ['nih', 'erneg', 'erpos'])
 
     parser.add_argument('-use_gene_expression',
                          default = 'True',
                          required = False,
                          choices = ['True', 'False'])
 
-    parser.add_argument('p_value_th',
+    parser.add_argument('-p_value_th',
                         default = 0.05,
                         required = False)
     return parser.parse_args()
@@ -67,18 +70,16 @@ if __name__ == "__main__":
     #------------------------------------------
     #           Data pre-processing
     #------------------------------------------
-    if dataset == 'NIH':
-        df = pd.read_csv("../data/NIH_SNPs_features.csv", delim_whitespace=True)
-        data_num = df.shape[0]
-        df = df[df.p_value != -1] # remove instances with missing p-values (-1's in the table)
-        effective_data_num = df.shape[0]
-        effective_data_ratio = float(effective_data_num/data_num)
-        print('the ratio of effective data:', effective_data_ratio)
-    elif dataset == 'ERneg':
-        df = pd.read_csv("../data/michailidu_SNPs_features_ERneg.csv", delim_whitespace=True) 
-    elif dataset == 'ERpos':
-        df = pd.read_csv("../data/michailidu_SNPs_features_ERpos.csv", delim_whitespace=True) 
-
+    if dataset == 'nih':
+        #df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv", delim_whitespace=True)
+        df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv")
+        best_param_dir = './best_param/random_forest_nih.pickle'
+    elif dataset == 'erneg':
+        df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERneg_new.csv")
+        best_param_dir = './best_param/michailidu_erneg.pickle' 
+    elif dataset == 'erpos':
+        df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERpos_new.csv")
+        best_param_dir = './best_param/michailidu_erpos.pickle' 
     column_names = ['wildtype_value', 
                     'mutant_value', 
                     'confidence', 
@@ -112,11 +113,6 @@ if __name__ == "__main__":
     df['classification_result'] = p_values_binary 
     print(df)
 
-    # the feature "Gene_expression" is a categorical data with 3 classes:
-    # [1: down regulated][2:normal expression][3: upregulated]
-    # they need to be convert to one-hot to be well used by the classifier because they are
-    # actually not ordinal.
-
     #calculate class weight
     df_pos = df[df['classification_result'] == 1]
     df_neg = df[df['classification_result'] == 0]
@@ -130,6 +126,8 @@ if __name__ == "__main__":
     X = np.array(df.drop(columns = ['classification_result']))
     y = np.array(df['classification_result'])
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
+    #print(X.shape)
+    #print(y.shape)
 
     #------------------------------------------
     #           Random Forest 
@@ -145,37 +143,26 @@ if __name__ == "__main__":
     thresholds_records = []
     feature_importance_records = []
 
+    # load pre-selected hyper parameters
+    best_param_file = open(best_param_dir, 'rb')
+    best_param = pickle.load(best_param_file)
+    print('hyper-parameters selected from randomized search:')
+    print(best_param)
+
     # run the model in a cross-validation manner
     for train_index, val_index in skf.split(X, y):
 
-        # seperate hyper-parameters for different datasets
-        if dataset == 'NIH':
-            rf = RandomForestClassifier(n_estimators=1000,
-                                        max_depth=None,
-                                        min_samples_split=2,
-                                        random_state=0,
-                                        max_features = "auto",
-                                        criterion = "gini",
-                                        class_weight = class_weight,
-                                        n_jobs = -1)
-        elif dataset == 'ERneg':
-            rf = RandomForestClassifier(n_estimators=1000,
-                                        max_depth=None,
-                                        min_samples_split=2,
-                                        random_state=0,
-                                        max_features = "auto",
-                                        criterion = "gini",
-                                        class_weight = class_weight,
-                                        n_jobs = -1)            
-        elif dataset == 'ERpos':
-            rf = RandomForestClassifier(n_estimators=1000,
-                                        max_depth=None,
-                                        min_samples_split=2,
-                                        random_state=0,
-                                        max_features = "auto",
-                                        criterion = "gini",
-                                        class_weight = class_weight,
-                                        n_jobs = -1)
+        # load the hyper-parameters into the random forest model
+        rf = RandomForestClassifier(n_estimators=best_param['n_estimators'],
+                                    criterion=best_param['criterion'],
+                                    max_features=best_param['max_features'],
+                                    max_depth=best_param['max_depth'],
+                                    min_samples_split=best_param['min_samples_split'],
+                                    min_samples_leaf=best_param['min_samples_leaf'], 
+                                    bootstrap=best_param['bootstrap'],
+                                    random_state=123,
+                                    class_weight = class_weight,
+                                    n_jobs = -1)
 
         X_train, X_val = X[train_index], X[val_index]
         y_train, y_val = y[train_index], y[val_index]

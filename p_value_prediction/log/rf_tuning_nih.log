@@ -1,0 +1,7 @@
+dataset: nih
+threshold for p-value is set to  0.05
+use gene expression feature: True
+number of positive samples: 475
+number of negative samples: 3790
+hyper paramter search space:
+{'n_estimators': [500, 722, 944, 1166, 1388, 1611, 1833, 2055, 2277, 2500], 'criterion': ['gini', 'entropy'], 'max_features': ['sqrt', 'log2', None], 'max_depth': [5, 10, 15, 20, 25, 31, 36, 41, 46, 52, 57, 62, 67, 72, 78, 83, 88, 93, 99, 104, 109, 114, 120, None], 'min_samples_split': [2, 4, 6, 8, 10, 12, 14, 16], 'min_samples_leaf': [1, 2, 4, 6, 8, 10], 'bootstrap': [True, False]}
