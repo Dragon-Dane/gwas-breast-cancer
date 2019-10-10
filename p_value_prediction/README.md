@@ -1,4 +1,4 @@
-# Developing notes
+# Random forest for SNPs
 Machine learning on the SNPs datasets. Those two datasets are NIH and michailidu genenames disease association. Random forest is used as the classification model.
 
 ## Hyper-parameter tuning
