@@ -62,6 +62,7 @@ if __name__ == "__main__":
     scoring_metric = args.scoring_metric
     seed = args.seed
     print('dataset:', dataset)
+    print('scoring metric for model selection:', scoring_metric)
     print('threshold for p-value is set to ', p_value_threshold)
     print('use gene expression feature:', use_gene_expression)
     #-----------------------------------------------------------
@@ -164,11 +165,11 @@ if __name__ == "__main__":
                                             random_state=seed,
                                             verbose=0)
 
+    print('total number of iterations for randomized search: ',num_search_iter)
     start = time()
     random_search.fit(X, y)
-    print("RandomizedSearchCV took %.2f seconds for %d candidates"
-          " parameter settings." % ((time() - start), num_search_iter))
-    
+    print('Elapsed time for randomized search: ', (time()-start))
+
     print('results of randomized search:')
     report(random_search.cv_results_)  
 
