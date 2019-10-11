@@ -5,3 +5,19 @@ number of positive samples: 475
 number of negative samples: 3790
 hyper paramter search space:
 {'n_estimators': [500, 722, 944, 1166, 1388, 1611, 1833, 2055, 2277, 2500], 'criterion': ['gini', 'entropy'], 'max_features': ['sqrt', 'log2', None], 'max_depth': [5, 10, 15, 20, 25, 31, 36, 41, 46, 52, 57, 62, 67, 72, 78, 83, 88, 93, 99, 104, 109, 114, 120, None], 'min_samples_split': [2, 4, 6, 8, 10, 12, 14, 16], 'min_samples_leaf': [1, 2, 4, 6, 8, 10], 'bootstrap': [True, False]}
+RandomizedSearchCV took 4037.60 seconds for 300 candidates parameter settings.
+results of randomized search:
+Model with rank: 1
+Mean validation score: 0.630 (std: 0.126)
+Parameters: {'n_estimators': 722, 'min_samples_split': 14, 'min_samples_leaf': 1, 'max_features': None, 'max_depth': 62, 'criterion': 'gini', 'bootstrap': False}
+
+Model with rank: 2
+Mean validation score: 0.619 (std: 0.134)
+Parameters: {'n_estimators': 1388, 'min_samples_split': 14, 'min_samples_leaf': 2, 'max_features': None, 'max_depth': 88, 'criterion': 'gini', 'bootstrap': False}
+
+Model with rank: 3
+Mean validation score: 0.619 (std: 0.130)
+Parameters: {'n_estimators': 2500, 'min_samples_split': 12, 'min_samples_leaf': 1, 'max_features': None, 'max_depth': 88, 'criterion': 'gini', 'bootstrap': False}
+
+best hyper-parameter combinaiton:
+{'n_estimators': 722, 'min_samples_split': 14, 'min_samples_leaf': 1, 'max_features': None, 'max_depth': 62, 'criterion': 'gini', 'bootstrap': False}

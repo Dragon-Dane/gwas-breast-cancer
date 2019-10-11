@@ -1,0 +1,27 @@
+dataset: erpos
+threshold for p-value is set to  0.05
+use gene expression feature: True
+number of positive samples: 1320
+number of negative samples: 9860
+hyper paramter search space:
+{'n_estimators': [500, 722, 944, 1166, 1388, 1611, 1833, 2055, 2277, 2500], 'criterion': ['gini', 'entropy'], 'max_features': ['sqrt', 'log2', None], 'max_depth': [5, 10, 15, 20, 25, 31, 36, 41, 46, 52, 57, 62, 67, 72, 78, 83, 88, 93, 99, 104, 109, 114, 120, None], 'min_samples_split': [2, 4, 6, 8, 10, 12, 14, 16], 'min_samples_leaf': [1, 2, 4, 6, 8, 10], 'bootstrap': [True, False]}
+RandomizedSearchCV took 6455.34 seconds for 300 candidates parameter settings.
+results of randomized search:
+Model with rank: 1
+Mean validation score: 0.526 (std: 0.030)
+Parameters: {'n_estimators': 1166, 'min_samples_split': 10, 'min_samples_leaf': 10, 'max_features': None, 'max_depth': 109, 'criterion': 'entropy', 'bootstrap': False}
+
+Model with rank: 1
+Mean validation score: 0.526 (std: 0.030)
+Parameters: {'n_estimators': 1611, 'min_samples_split': 2, 'min_samples_leaf': 10, 'max_features': None, 'max_depth': 62, 'criterion': 'entropy', 'bootstrap': False}
+
+Model with rank: 1
+Mean validation score: 0.526 (std: 0.030)
+Parameters: {'n_estimators': 1833, 'min_samples_split': 12, 'min_samples_leaf': 10, 'max_features': None, 'max_depth': 31, 'criterion': 'entropy', 'bootstrap': False}
+
+Model with rank: 1
+Mean validation score: 0.526 (std: 0.030)
+Parameters: {'n_estimators': 1611, 'min_samples_split': 4, 'min_samples_leaf': 10, 'max_features': None, 'max_depth': 52, 'criterion': 'entropy', 'bootstrap': False}
+
+best hyper-parameter combinaiton:
+{'n_estimators': 1166, 'min_samples_split': 10, 'min_samples_leaf': 10, 'max_features': None, 'max_depth': 109, 'criterion': 'entropy', 'bootstrap': False}
