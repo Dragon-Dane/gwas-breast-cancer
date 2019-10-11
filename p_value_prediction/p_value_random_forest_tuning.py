@@ -27,8 +27,13 @@ def get_args():
                         required = False)
 
     parser.add_argument('-num_search_iter',
-                        default = 300,
+                        default = 500,
                         required = False)
+
+    parser.add_argument('-scoring_metric',
+                        default = None,
+                        required = False,
+                        help = 'Scoring metric for model selection. See scikit-learn docs.')
 
     parser.add_argument('-seed',
                         default = 42,
@@ -54,6 +59,7 @@ if __name__ == "__main__":
     use_gene_expression = args.use_gene_expression
     p_value_threshold = args.p_value_th
     num_search_iter =args.num_search_iter
+    scoring_metric = args.scoring_metric
     seed = args.seed
     print('dataset:', dataset)
     print('threshold for p-value is set to ', p_value_threshold)
@@ -128,12 +134,12 @@ if __name__ == "__main__":
     max_features = ['sqrt', 'log2']
     max_features.append(None)
     # Maximum number of levels in tree
-    max_depth = [int(x) for x in np.linspace(5, 120, num = 23)]
+    max_depth = [int(x) for x in np.linspace(5, 150, num = 10)]
     max_depth.append(None)
     # Minimum number of samples required to split a node
-    min_samples_split = [2, 4, 6, 8, 10, 12, 14, 16]
+    min_samples_split = [2, 4, 6, 8, 10, 12]
     # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1, 2, 4, 6, 8, 10]
+    min_samples_leaf = [1, 2, 4, 6, 8]
     # Method of selecting samples for training each tree
     bootstrap = [True, False]  
     param_grid = {'n_estimators': n_estimators,
@@ -152,7 +158,7 @@ if __name__ == "__main__":
     # run randomized search
     random_search = RandomizedSearchCV(clf, param_distributions=param_grid,
                                             n_iter=num_search_iter, 
-                                            scoring='balanced_accuracy',
+                                            scoring=scoring_metric,
                                             cv=5, 
                                             iid=False,
                                             random_state=seed,
