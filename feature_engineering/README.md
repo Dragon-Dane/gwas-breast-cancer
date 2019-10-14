@@ -1,5 +1,5 @@
-# Insterting gene expression
-The codes in this folder extract gene expression information from graph data and insert into the .csv files.
+# Feature engineering
+Feature engineering for machine learning
 
 ## Gene expression sources
 * ERpos to Michailidu ERPos
