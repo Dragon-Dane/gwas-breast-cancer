@@ -9,12 +9,6 @@ def get_args():
                         required=False,
                         help='directory of gene expression graph')
 
-    parser.add_argument('-graph_dir',
-                        #default='../../data/original/string_ERpos.gexf',
-                        default='../../data/original/string_ERpos_neighbours.gexf',
-                        required=False,
-                        help='directory of the dataset')
-
     parser.add_argument('-out_dir',
                         default='../../data/output/NIH_part_SNPs_features_nodup_new.csv',
                         required=False,
@@ -29,8 +23,9 @@ if __name__=="__main__":
 
     # read the dataframe from csv file without gene expressions
     df = pd.read_csv(data_dir)
+    num_rows = df.shape[0]
     #df = pd.read_csv(data_dir, delim_whitespace=True)
-    print(df)
+    print('number of rows in the dataframe:', num_rows)
 
     # combine 'struct_pos' feature
     column_names = ['core','nis','interface']
@@ -38,4 +33,3 @@ if __name__=="__main__":
     print(df_struct_pos)
 
     # combine 'sec_struct' feature
-    
