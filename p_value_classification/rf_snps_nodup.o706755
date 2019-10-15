@@ -1,0 +1,45 @@
+--------------------------------------
+Running PBS prologue script
+--------------------------------------
+User and Job Data:
+--------------------------------------
+Job ID:    706755.qb3
+Username:  wshi6
+Group:     loniusers
+Date:      15-Oct-2019 11:20
+Node:      qb503 (3127)
+--------------------------------------
+PBS has allocated the following nodes:
+
+qb503
+
+A total of 48 processors on 1 nodes allocated
+---------------------------------------------
+Check nodes and clean them of stray processes
+---------------------------------------------
+Checking node qb503 11:20:24 
+Done clearing all the allocated nodes
+------------------------------------------------------
+Concluding PBS prologue script - 15-Oct-2019 11:20:24
+------------------------------------------------------
+------------------------------------------------------
+Running PBS epilogue script    - 15-Oct-2019 12:52:38
+------------------------------------------------------
+Checking node qb503 (MS)
+Checking node qb503 ok
+------------------------------------------------------
+Concluding PBS epilogue script - 15-Oct-2019 12:52:41
+------------------------------------------------------
+Exit Status:     0
+Job ID:          706755.qb3
+Username:        wshi6
+Group:           loniusers
+Job Name:        rf_snps_nodup
+Session Id:      3126
+Resource Limits: ncpus=1,neednodes=1:ppn=48,nodes=1:ppn=48,walltime=72:00:00
+Resources Used:  cput=04:23:51,mem=3910768kb,vmem=30245464kb,walltime=01:32:16
+Queue Used:      bigmem
+Account String:  loni_omics01
+Node:            qb503
+Process id:      23219
+------------------------------------------------------

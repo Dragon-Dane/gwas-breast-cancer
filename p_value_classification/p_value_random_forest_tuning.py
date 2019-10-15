@@ -15,7 +15,7 @@ def get_args():
     parser.add_argument('-dataset',
                         default = 'nih',
                         required = False,
-                        choices = ['nih', 'erneg', 'erpos'])
+                        choices = ['nih', 'nih_nodup', 'erneg', 'erpos'])
 
     parser.add_argument('-use_gene_expression',
                          default = 'True',
@@ -77,7 +77,10 @@ if __name__ == "__main__":
         best_param_dir = './best_param/michailidu_erneg.pickle' 
     elif dataset == 'erpos':
         df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERpos_new.csv")
-        best_param_dir = './best_param/michailidu_erpos.pickle' 
+        best_param_dir = './best_param/michailidu_erpos.pickle'
+    elif dataset == 'nih_nodup':
+        df = pd.read_csv("../../data/output/NIH_part_SNPs_features_nodup_new.csv")
+        best_param_dir = './best_param/random_forest_nih_nodup.pickle' 
     column_names = ['wildtype_value', 
                     'mutant_value', 
                     'confidence', 

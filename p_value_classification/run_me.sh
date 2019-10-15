@@ -8,7 +8,7 @@
 #PBS -j oe
 
 source activate pytorch
-cd /work/wshi6/deeplearning-data/gwas-breast-cancer-prj/gwas-breast-cancer/p_value_prediction/
+cd /work/wshi6/deeplearning-data/gwas-breast-cancer-prj/gwas-breast-cancer/p_value_classification/
 python p_value_random_forest_tuning.py -dataset nih -scoring_metric f1 > ./log/rf_tuning_nih.log 2>&1
 python p_value_random_forest_tuning.py -dataset erneg -scoring_metric f1 > ./log/rf_tuning_michailidu_erneg.log 2>&1
 python p_value_random_forest_tuning.py -dataset erpos -scoring_metric f1 > ./log/rf_tuning_michailidu_erpos.log 2>&1

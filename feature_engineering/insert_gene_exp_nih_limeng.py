@@ -125,7 +125,6 @@ if __name__=="__main__":
     disgenet_score_dict = disease_dict['disgenet_score']
     malacards_score_dict = disease_dict['malacards_score']
     ensembl_dict_reversed = dict((v,k) for k,v in ensembl_dict.items())
-    print(ensembl_dict_reversed)
     
     ensp_ids = list(df['ensembl']) # get ENSP-IDs in the dataset as iterable
 
@@ -146,7 +145,7 @@ if __name__=="__main__":
     
     assert(len(gene_exp_list) == df.shape[0])
     df['gene_exp'] = gene_exp_list # add the list to dataframe
-    df['disease_score'] = diseases_score_list
+    df['diseases_score'] = diseases_score_list
     df['disgenet_score'] = disgenet_score_list
     df['malacards_score'] = malacards_score_list 
     print('shape of final dictionary:', df.shape)
