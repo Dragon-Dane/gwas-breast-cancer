@@ -1,9 +1,9 @@
 
 #!/bin/bash
-#PBS -l nodes=1:ppn=48
+#PBS -l nodes=1:ppn=20
 #PBS -l walltime=72:00:00
-#PBS -q bigmem
-#PBS -N rf_snps
+#PBS -q workq
+#PBS -N rf_snps_cla
 #PBS -A loni_omics01
 #PBS -j oe
 

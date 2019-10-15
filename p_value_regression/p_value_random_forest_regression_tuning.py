@@ -23,7 +23,7 @@ def get_args():
                          choices = ['True', 'False'])
 
     parser.add_argument('-num_search_iter',
-                        default = 2,
+                        default = 500,
                         required = False)
 
     parser.add_argument('-scoring_metric',
