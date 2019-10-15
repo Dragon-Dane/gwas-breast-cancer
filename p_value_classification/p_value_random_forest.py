@@ -123,7 +123,6 @@ if __name__ == "__main__":
     num_neg = df_neg.shape[0]
     print('number of positive samples:', num_pos)
     print('number of negative samples:', num_neg)
-    class_weight = {0:num_pos, 1:num_neg} 
 
     # data and label
     X = np.array(df.drop(columns = ['classification_result']))
@@ -164,7 +163,7 @@ if __name__ == "__main__":
                                     min_samples_leaf=best_param['min_samples_leaf'], 
                                     bootstrap=best_param['bootstrap'],
                                     random_state=123,
-                                    class_weight = class_weight,
+                                    class_weight='balanced',
                                     n_jobs = -1)
 
         X_train, X_val = X[train_index], X[val_index]
