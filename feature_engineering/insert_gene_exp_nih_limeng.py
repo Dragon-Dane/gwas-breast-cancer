@@ -109,9 +109,6 @@ if __name__=="__main__":
     print('number of samples in original dataset:', df.shape[0])    
     print('number of features in original dataset:',df.shape[1])
 
-    #print('entries with -1 p-values:')
-    #print(df[df.p_value == -1])
-
     df = df[df.p_value != -1] # exclude the rows which have missing p-values
     print('number of samples after dropping samples with missing p-values:', df.shape[0])
 
@@ -125,8 +122,8 @@ if __name__=="__main__":
     disease_dict = df_disease.to_dict()
     ensembl_dict = disease_dict['ensembl']
     diseases_score_dict = disease_dict['diseases_score']
-    disgenet_score_dict = disease_dict['disgenet_score_score']
-    malacards_score_dict = disease_dict['malacards_score_score']
+    disgenet_score_dict = disease_dict['disgenet_score']
+    malacards_score_dict = disease_dict['malacards_score']
     ensembl_dict_reversed = dict((v,k) for k,v in ensembl_dict.items())
     print(ensembl_dict_reversed)
     
@@ -152,6 +149,7 @@ if __name__=="__main__":
     df['disease_score'] = diseases_score_list
     df['disgenet_score'] = disgenet_score_list
     df['malacards_score'] = malacards_score_list 
+    print('shape of final dictionary:', df.shape)
 
     df.to_csv(out_dir) # save the csv file
 
