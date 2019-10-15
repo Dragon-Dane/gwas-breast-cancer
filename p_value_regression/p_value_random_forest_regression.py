@@ -1,17 +1,16 @@
-'''
-Perform 5-fold cross validation and show the classification performance for
-pre-trained random forest classifiers. The pre-trained models are trained by
-random_forest_tuning.py
-'''
+"""
+This code is used to find the optimal random forest hyper-parameters for each dataset.
+Basically, it does a grid search on the specified hyper-parameters.
+"""
 import argparse
-import numpy as np
-import pandas as pd
+import numpy as np  
+import pandas as pd  
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import KFold
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
+from time import time
 import pickle
-from sklearn.model_selection import StratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_curve
-from sklearn.metrics import matthews_corrcoef, precision_score, recall_score
-from sklearn.metrics import f1_score, confusion_matrix
 from statistics import mean 
 import matplotlib.pyplot as plt
 
@@ -27,9 +26,10 @@ def get_args():
                          required = False,
                          choices = ['True', 'False'])
 
-    parser.add_argument('-p_value_th',
-                        default = 0.05,
+    parser.add_argument('-seed',
+                        default = 42,
                         required = False)
+
     return parser.parse_args()
 
 def feature_rank(feature_importance_records, column_names):
@@ -64,15 +64,13 @@ if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
     use_gene_expression = args.use_gene_expression
-    p_value_threshold = args.p_value_th
+    seed = args.seed
     print('dataset:', dataset)
-    print('threshold for p-value is set to ', p_value_threshold)
     print('use gene expression feature:', use_gene_expression)
-    #------------------------------------------
-    #           Data pre-processing
-    #------------------------------------------
+    #-----------------------------------------------------------
+    #              Data pre-processing
+    #-----------------------------------------------------------
     if dataset == 'nih':
-        #df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv", delim_whitespace=True)
         df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv")
         best_param_dir = './best_param/random_forest_nih.pickle'
     elif dataset == 'erneg':
@@ -83,7 +81,7 @@ if __name__ == "__main__":
         best_param_dir = './best_param/michailidu_erpos.pickle'
     elif dataset == 'nih_nodup':
         df = pd.read_csv("../../data/output/NIH_part_SNPs_features_nodup_new.csv")
-        best_param_dir = './best_param/random_forest_nih_nodup.pickle'          
+        best_param_dir = './best_param/random_forest_nih_nodup.pickle' 
     column_names = ['wildtype_value', 
                     'mutant_value', 
                     'confidence', 
@@ -105,45 +103,22 @@ if __name__ == "__main__":
                     'malacards_score', 
                     'gene_exp',
                     'p_value']
-    df = df[column_names] #selecting needed columns
+    df = df[column_names]
     if use_gene_expression == 'False':
         df = df.drop(columns = ['gene_exp'])
 
-    # add a column indicating the prediction result (0 or 1)
-    p_values = df['p_value']
-    p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
-    p_values_binary = [int(p_value <= p_value_threshold) for p_value in p_values]
-    df = df.drop(columns = ['p_value'])
-    df['classification_result'] = p_values_binary 
-    print(df)
-
-    #calculate class weight
-    df_pos = df[df['classification_result'] == 1]
-    df_neg = df[df['classification_result'] == 0]
-    num_pos = df_pos.shape[0]
-    num_neg = df_neg.shape[0]
-    print('number of positive samples:', num_pos)
-    print('number of negative samples:', num_neg)
-
     # data and label
-    X = np.array(df.drop(columns = ['classification_result']))
-    y = np.array(df['classification_result'])
-    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
-    #print(X.shape)
-    #print(y.shape)
+    X = np.array(df.drop(columns = ['p_value']))
+    y = np.array(df['p_value'])
+    kf = KFold(n_splits=5, shuffle=True, random_state=seed)
 
-    #------------------------------------------
-    #           Random Forest 
-    #------------------------------------------
-    # list contains dictionarys for each fold
-    train_acc_records = []
-    val_acc_records = []
-    val_precision_records = []
-    val_recall_records = []
-    val_mcc_records = []
-    fpr_records = []
-    tpr_records = []
-    thresholds_records = []
+    #-----------------------------------------------------------
+    #                   Random forest
+    #-----------------------------------------------------------
+    train_mse_records = []
+    train_r2_records = []
+    val_mse_records = []
+    val_r2_records = []
     feature_importance_records = []
 
     # load pre-selected hyper parameters
@@ -151,20 +126,19 @@ if __name__ == "__main__":
     best_param = pickle.load(best_param_file)
     print('hyper-parameters selected from randomized search:')
     print(best_param)
-
+    
     # run the model in a cross-validation manner
-    for train_index, val_index in skf.split(X, y):
+    for train_index, val_index in kf.split(X):
 
         # load the hyper-parameters into the random forest model
-        rf = RandomForestClassifier(n_estimators=best_param['n_estimators'],
+        rf = RandomForestRegressor(n_estimators=best_param['n_estimators'],
                                     criterion=best_param['criterion'],
                                     max_features=best_param['max_features'],
                                     max_depth=best_param['max_depth'],
                                     min_samples_split=best_param['min_samples_split'],
                                     min_samples_leaf=best_param['min_samples_leaf'], 
                                     bootstrap=best_param['bootstrap'],
-                                    random_state=123,
-                                    class_weight='balanced',
+                                    random_state=seed,
                                     n_jobs = -1)
 
         X_train, X_val = X[train_index], X[val_index]
@@ -175,49 +149,24 @@ if __name__ == "__main__":
         rf.fit(X_train, y_train)
         print('training finished.')
 
-        # training performance
-        train_acc = rf.score(X_train, y_train)
-        train_acc_records.append(train_acc)
-        print('training accuracy:', train_acc)
+        y_train_pred = rf.predict(X_train)
+        y_val_pred = rf.predict(X_val)
 
-        # validation performance
-        predictions = rf.predict(X_val)
-        num_correct = np.sum(predictions == y_val)
-        print('number of correct predictions:',num_correct)
+        mse_train = mean_squared_error(y_train, y_train_pred)
+        train_mse_records.append(mse_train)
+        print('mean squared error for training: ', mse_train)
 
-        val_acc = rf.score(X_val, y_val)
-        val_acc_records.append(val_acc)
-        print('validation accuracy:', val_acc)
+        r2_train = r2_score(y_train, y_train_pred)
+        train_r2_records.append(r2_train)
+        print('r2 score for training: ', r2_train)
 
-        val_precision = precision_score(y_val,predictions)
-        val_precision_records.append(val_precision)        
-        print('validation precision:', val_precision)
+        mse_val = mean_squared_error(y_val, y_val_pred)
+        val_mse_records.append(mse_val)
+        print('mean squared error for validation: ', mse_val)
 
-        val_recall = recall_score(y_val,predictions)
-        val_recall_records.append(val_recall)        
-        print('validation recall:', val_recall)
-
-        val_mcc = matthews_corrcoef(y_val, predictions)
-        val_mcc_records.append(val_mcc)
-        print('validation mcc:', val_mcc)
-
-        val_f1 = f1_score(y_val, predictions)
-        print('validation f1:', val_f1)
-
-        val_cm = confusion_matrix(y_val, predictions)
-        print('validation confusion matrix:', val_cm)
-
-        # output probabilities for val data
-        val_prob = rf.predict_proba(X_val)
-        fpr, tpr, thresholds = roc_curve(y_val, val_prob[:, 1])
-
-        # convert to list so that can be saved in .json file
-        fpr = fpr.tolist()
-        tpr = tpr.tolist()
-        thresholds = thresholds.tolist()
-        fpr_records.append(fpr)
-        tpr_records.append(tpr)
-        thresholds_records.append(thresholds)
+        r2_val = r2_score(y_val, y_val_pred)
+        val_r2_records.append(r2_val)
+        print('r2 score for validation:', r2_val)
 
         feature_importance_records.append(rf.feature_importances_)
         print('--------------------------------------------------')
@@ -226,11 +175,10 @@ if __name__ == "__main__":
     #           Post-processing 
     #------------------------------------------
     # averaged validation metrics over folds
-    print('averaged training accuracy:', mean(train_acc_records))
-    print('averaged validation accuracy:', mean(val_acc_records))
-    print('averaged validation precision:', mean(val_precision_records))
-    print('averaged validation recall:', mean(val_recall_records))
-    print('averaged validation MCC:', mean(val_mcc_records))
+    print('averaged training mse:', mean(train_mse_records))
+    print('averaged training r2 score:', mean(train_r2_records))
+    print('averaged validation mse:', mean(val_mse_records))
+    print('averaged validation r2 score:', mean(val_r2_records))
 
     # rank the features
     feature_rank(feature_importance_records, column_names)
