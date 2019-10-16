@@ -22,7 +22,7 @@ def get_args():
                         required = False,
                         choices = ['nih', 'nih_nodup', 'erneg', 'erpos'])
 
-    parser.add_argument('-use_gene_expression',
+    parser.add_argument('-use_structual_features',
                          default = 'True',
                          required = False,
                          choices = ['True', 'False'])
@@ -63,51 +63,62 @@ def feature_rank(feature_importance_records, column_names):
 if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
-    use_gene_expression = args.use_gene_expression
+    use_structual_features = args.use_structual_features
     p_value_threshold = args.p_value_th
     print('dataset:', dataset)
     print('threshold for p-value is set to ', p_value_threshold)
-    print('use gene expression feature:', use_gene_expression)
+    print('Using structual features:', use_structual_features)
     #------------------------------------------
     #           Data pre-processing
     #------------------------------------------
     if dataset == 'nih':
-        #df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv", delim_whitespace=True)
         df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv")
         best_param_dir = './best_param/random_forest_nih.pickle'
     elif dataset == 'erneg':
         df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERneg_new.csv")
-        best_param_dir = './best_param/michailidu_erneg.pickle' 
+        best_param_dir = './best_param/michailidu_erneg.pickle'
     elif dataset == 'erpos':
         df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERpos_new.csv")
         best_param_dir = './best_param/michailidu_erpos.pickle'
     elif dataset == 'nih_nodup':
         df = pd.read_csv("../../data/output/NIH_part_SNPs_features_nodup_new.csv")
-        best_param_dir = './best_param/random_forest_nih_nodup.pickle'          
-    column_names = ['wildtype_value', 
+        best_param_dir = './best_param/random_forest_nih_nodup.pickle'      
+    column_names = [#----non-structual----
+                    'wildtype_value', 
                     'mutant_value', 
-                    'confidence', 
+                    'confidence',   
+                    'blosum62_mu', 
+                    'blosum62_wt',
+                    'entropy', 
+                    'diseases_score', 
+                    'disgenet_score', 
+                    'malacards_score', 
+                    'gene_exp',
+                    #----structual----
                     'core', 
                     'nis', 
                     'interface', 
                     'hbo', 
                     'sbr', 
                     'aromatic', 
-                    'hydrophobic',  
-                    'blosum62_mu', 
-                    'blosum62_wt', 
+                    'hydrophobic', 
                     'helix', 
                     'coil', 
                     'sheet', 
-                    'entropy', 
-                    'diseases_score', 
-                    'disgenet_score', 
-                    'malacards_score', 
-                    'gene_exp',
+                    #----label----
                     'p_value']
     df = df[column_names] #selecting needed columns
-    if use_gene_expression == 'False':
-        df = df.drop(columns = ['gene_exp'])
+    if use_structual_features == 'False':
+        df = df.drop(columns = ['core', 
+                                'nis', 
+                                'interface', 
+                                'hbo', 
+                                'sbr', 
+                                'aromatic', 
+                                'hydrophobic', 
+                                'helix', 
+                                'coil', 
+                                'sheet'])
 
     # add a column indicating the prediction result (0 or 1)
     p_values = df['p_value']
@@ -214,10 +225,8 @@ if __name__ == "__main__":
         # convert to list so that can be saved in .json file
         fpr = fpr.tolist()
         tpr = tpr.tolist()
-        thresholds = thresholds.tolist()
         fpr_records.append(fpr)
         tpr_records.append(tpr)
-        thresholds_records.append(thresholds)
 
         feature_importance_records.append(rf.feature_importances_)
         print('--------------------------------------------------')
@@ -232,7 +241,13 @@ if __name__ == "__main__":
     print('averaged validation recall:', mean(val_recall_records))
     print('averaged validation MCC:', mean(val_mcc_records))
 
+    # pickle the ROC info for plotting
+    roc_info = {'fpr_records':fpr_records, 'tpr_records': tpr_records}
+    result_dir = './results/roc_' + dataset + '_use_structual_features_' + use_structual_features + '.pickle'
+    pickle_out = open(result_dir,"wb")
+    pickle.dump(roc_info, pickle_out)
+
     # rank the features
     feature_rank(feature_importance_records, column_names)
-    plt.savefig('./figures/random_forest_' + dataset + '_use_gene_expression_' + use_gene_expression + '.png')
-    plt.show()
+    plt.savefig('./figures/random_forest_' + dataset + '_use_structual_features_' + use_structual_features + '.png')
+    #plt.show()
