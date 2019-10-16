@@ -1,0 +1,136 @@
+dataset: nih_nodup
+threshold for p-value is set to  0.05
+use gene expression feature: True
+      wildtype_value  mutant_value  ...  gene_exp  classification_result
+0               0.08          0.08  ...         0                      0
+1               0.88          0.88  ...         0                      0
+2               0.10          0.11  ...         0                      0
+3               0.19          0.19  ...         0                      0
+4               0.92          0.92  ...         0                      0
+5               0.14          0.07  ...         0                      0
+6               0.39          0.39  ...         0                      0
+7               0.13          0.06  ...         0                      0
+8               0.04          0.04  ...         0                      0
+9               0.05          0.05  ...         0                      0
+10              0.38          0.38  ...         0                      0
+11              0.06          0.05  ...         0                      0
+12              0.11          0.11  ...         0                      0
+13              0.04          0.03  ...         0                      0
+14              0.07          0.07  ...         0                      0
+15              0.59          0.59  ...         0                      0
+16              0.02          0.02  ...         0                      0
+17              0.05          0.14  ...         0                      0
+18              0.16          0.16  ...         0                      0
+19              0.19          0.19  ...         0                      0
+20              0.10          0.10  ...         0                      0
+21              0.12          0.12  ...         0                      0
+22              0.17          0.04  ...         0                      0
+23              0.09          0.06  ...         0                      0
+24              0.17          0.17  ...         0                      0
+25              0.17          0.02  ...         0                      0
+26              0.24          0.45  ...         0                      0
+27              0.03          0.12  ...         0                      0
+28              0.12          0.00  ...         0                      0
+29              0.68          0.68  ...         0                      0
+...              ...           ...  ...       ...                    ...
+1082            0.74          0.74  ...         0                      0
+1083            0.53          0.53  ...         0                      0
+1084            0.04          0.00  ...         0                      0
+1085            0.26          0.02  ...         0                      0
+1086            0.27          0.27  ...         0                      0
+1087            0.92          0.92  ...         1                      0
+1088            0.11          0.07  ...         1                      0
+1089            0.10          0.03  ...         0                      0
+1090            0.02          0.02  ...         0                      0
+1091            0.09          0.09  ...         0                      0
+1092            0.10          0.05  ...         0                      0
+1093            0.31          0.31  ...         0                      0
+1094            0.03          0.02  ...         0                      0
+1095            0.04          0.07  ...         0                      0
+1096            0.43          0.43  ...         0                      0
+1097            0.05          0.05  ...         0                      0
+1098            0.93          0.00  ...         0                      0
+1099            0.55          0.55  ...         0                      0
+1100            0.11          0.11  ...         0                      0
+1101            0.11          0.11  ...         0                      0
+1102            0.09          0.09  ...         0                      0
+1103            0.41          0.41  ...         0                      0
+1104            0.06          0.06  ...         0                      0
+1105            0.32          0.32  ...         0                      0
+1106            0.68          0.68  ...         0                      1
+1107            0.07          0.00  ...         1                      0
+1108            0.04          0.04  ...         0                      0
+1109            0.11          0.00  ...         0                      0
+1110            0.09          0.09  ...         0                      0
+1111            0.50          0.50  ...         0                      0
+
+[1112 rows x 21 columns]
+number of positive samples: 18
+number of negative samples: 1094
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 944, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'max_depth': 5, 'criterion': 'gini', 'class_weight': 'balanced', 'bootstrap': False}
+training the random forest...
+training finished.
+training accuracy: 0.9718785151856018
+number of correct predictions: 215
+validation accuracy: 0.9641255605381166
+validation precision: 0.0
+validation recall: 0.0
+validation mcc: -0.0182648401826484
+validation f1: 0.0
+validation confusion matrix: [[215   4]
+ [  4   0]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9730033745781778
+number of correct predictions: 208
+validation accuracy: 0.9327354260089686
+validation precision: 0.0
+validation recall: 0.0
+validation mcc: -0.03078480098589547
+validation f1: 0.0
+validation confusion matrix: [[208  11]
+ [  4   0]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9302587176602924
+number of correct predictions: 198
+validation accuracy: 0.8878923766816144
+validation precision: 0.0
+validation recall: 0.0
+validation mcc: -0.04357545202276392
+validation f1: 0.0
+validation confusion matrix: [[198  21]
+ [  4   0]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9640449438202248
+number of correct predictions: 212
+validation accuracy: 0.954954954954955
+validation precision: 0.0
+validation recall: 0.0
+validation mcc: -0.02111875733647137
+validation f1: 0.0
+validation confusion matrix: [[212   7]
+ [  3   0]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.9079685746352413
+number of correct predictions: 196
+validation accuracy: 0.8868778280542986
+validation precision: 0.0
+validation recall: 0.0
+validation mcc: -0.03900472163004235
+validation f1: 0.0
+validation confusion matrix: [[196  22]
+ [  3   0]]
+--------------------------------------------------
+averaged training accuracy: 0.9494308251759076
+averaged validation accuracy: 0.9253172292475906
+averaged validation precision: 0.0
+averaged validation recall: 0.0
+averaged validation MCC: -0.030549714431564304

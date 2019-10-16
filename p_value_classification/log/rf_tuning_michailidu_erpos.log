@@ -1,0 +1,27 @@
+dataset: erpos
+scoring metric for model selection: f1
+threshold for p-value is set to  0.05
+use gene expression feature: True
+number of positive samples: 1320
+number of negative samples: 9860
+hyper paramter search space:
+{'n_estimators': [500, 722, 944, 1166, 1388, 1611, 1833, 2055, 2277, 2500], 'criterion': ['gini', 'entropy'], 'max_features': ['sqrt', 'log2', None], 'max_depth': [5, 21, 37, 53, 69, 85, 101, 117, 133, 150, None], 'min_samples_split': [2, 4, 6, 8, 10, 12], 'min_samples_leaf': [1, 2, 4, 6, 8], 'bootstrap': [True, False], 'n_jobs': [-1], 'random_state': [42], 'class_weight': ['balanced']}
+total number of iterations for randomized search:  500
+/home/wshi6/miniconda3/envs/pytorch/lib/python3.6/site-packages/sklearn/metrics/classification.py:1143: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+  'precision', 'predicted', average, warn_for)
+Elapsed time for randomized search:  10428.170859575272
+results of randomized search:
+Model with rank: 1
+Mean validation score: 0.169 (std: 0.031)
+Parameters: {'random_state': 42, 'n_jobs': -1, 'n_estimators': 1388, 'min_samples_split': 10, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 117, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+
+Model with rank: 2
+Mean validation score: 0.169 (std: 0.031)
+Parameters: {'random_state': 42, 'n_jobs': -1, 'n_estimators': 722, 'min_samples_split': 4, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': None, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+
+Model with rank: 3
+Mean validation score: 0.169 (std: 0.031)
+Parameters: {'random_state': 42, 'n_jobs': -1, 'n_estimators': 1611, 'min_samples_split': 6, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 101, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+
+best hyper-parameter combinaiton:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 1388, 'min_samples_split': 10, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 117, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}

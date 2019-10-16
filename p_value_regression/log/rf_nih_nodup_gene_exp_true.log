@@ -1,0 +1,43 @@
+dataset: nih_nodup
+use gene expression feature: True
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 944, 'min_samples_split': 4, 'min_samples_leaf': 8, 'max_features': 'sqrt', 'max_depth': 69, 'criterion': 'mse', 'bootstrap': True}
+training the random forest...
+training finished.
+mean squared error for training:  0.8041536956625177
+r2 score for training:  0.17155824699768707
+mean squared error for validation:  0.4837555223101475
+r2 score for validation: -0.026411208469508507
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.8279516503321553
+r2 score for training:  0.166797424009973
+mean squared error for validation:  0.3884350127240852
+r2 score for validation: -0.024319908919337108
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.6576725013714502
+r2 score for training:  0.1756727715628975
+mean squared error for validation:  1.1823539663859404
+r2 score for validation: -0.01658717363277007
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.8017938944857804
+r2 score for training:  0.1623983300231755
+mean squared error for validation:  0.5292811323268091
+r2 score for validation: -0.0094011400744074
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.5146360240830204
+r2 score for training:  0.18910492871005935
+mean squared error for validation:  1.833882996115074
+r2 score for validation: -0.010418819049906602
+--------------------------------------------------
+averaged training mse: 0.7212415531869848
+averaged training r2 score: 0.1731063402607585
+averaged validation mse: 0.8835417259724112
+averaged validation r2 score: -0.017427650029185938
