@@ -1,0 +1,136 @@
+dataset: erpos
+threshold for p-value is set to  0.05
+Using structual features: False
+       wildtype_value  mutant_value  ...  gene_exp  classification_result
+0                0.13          0.13  ...         0                      0
+1                0.07          0.07  ...         0                      0
+2                0.08          0.08  ...         0                      0
+3                0.03          0.01  ...         0                      0
+4                0.04          0.12  ...         0                      0
+5                0.05          0.00  ...         0                      0
+6                0.88          0.88  ...         0                      0
+7                0.18          0.18  ...         0                      0
+8                0.17          0.17  ...         0                      0
+9                0.04          0.13  ...         0                      0
+10               0.19          0.19  ...         0                      1
+11               0.10          0.11  ...         0                      0
+12               0.60          0.60  ...         0                      0
+13               0.19          0.19  ...         0                      0
+14               0.90          0.90  ...         0                      1
+15               0.22          0.09  ...         0                      0
+16               0.02          0.01  ...         0                      0
+17               0.19          0.19  ...         0                      0
+18               0.18          0.18  ...         0                      0
+19               0.92          0.92  ...         0                      0
+20               0.06          0.07  ...         0                      0
+21               0.28          0.28  ...         0                      0
+22               0.07          0.08  ...         0                      0
+23               0.66          0.66  ...         0                      0
+24               0.08          0.06  ...         0                      0
+25               0.94          0.94  ...         0                      0
+26               0.22          0.22  ...         0                      0
+27               0.07          0.07  ...         0                      0
+28               0.04          0.04  ...         0                      0
+29               1.00          1.00  ...         0                      0
+...               ...           ...  ...       ...                    ...
+11150            0.37          0.37  ...         0                      1
+11151            0.63          0.15  ...         0                      0
+11152            0.06          0.06  ...         0                      0
+11153            0.06          0.03  ...         0                      0
+11154            0.38          0.09  ...         0                      0
+11155            0.13          0.00  ...         0                      1
+11156            0.66          0.66  ...         0                      1
+11157            0.16          0.03  ...         0                      0
+11158            0.48          0.07  ...         0                      0
+11159            0.16          0.16  ...         0                      1
+11160            0.28          0.28  ...         0                      0
+11161            0.21          0.05  ...         0                      1
+11162            0.53          0.53  ...         0                      0
+11163            0.48          0.48  ...         0                      0
+11164            0.04          0.04  ...         0                      1
+11165            0.20          0.40  ...         0                      1
+11166            0.51          0.07  ...         0                      0
+11167            0.32          0.32  ...         0                      1
+11168            0.20          0.00  ...         0                      0
+11169            0.22          0.01  ...         0                      0
+11170            0.05          0.01  ...         0                      0
+11171            0.08          0.08  ...         0                      0
+11172            0.69          0.69  ...         0                      0
+11173            0.08          0.08  ...         0                      0
+11174            0.69          0.69  ...         0                      0
+11175            0.27          0.27  ...         0                      0
+11176            0.08          0.08  ...         0                      1
+11177            0.05          0.95  ...         0                      0
+11178            0.00          0.00  ...         0                      0
+11179            0.86          0.86  ...         0                      0
+
+[11180 rows x 10 columns]
+number of positive samples: 1320
+number of negative samples: 9860
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 1388, 'min_samples_split': 10, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 117, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+training the random forest...
+training finished.
+training accuracy: 0.7819767441860465
+number of correct predictions: 1518
+validation accuracy: 0.6788908765652951
+validation precision: 0.17937853107344634
+validation recall: 0.4810606060606061
+validation mcc: 0.1293321693543032
+validation f1: 0.2613168724279835
+validation confusion matrix: [[1391  581]
+ [ 137  127]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.7865608228980322
+number of correct predictions: 1556
+validation accuracy: 0.6958855098389982
+validation precision: 0.20028818443804033
+validation recall: 0.5265151515151515
+validation mcc: 0.17093558747299747
+validation f1: 0.290187891440501
+validation confusion matrix: [[1417  555]
+ [ 125  139]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.7854427549194991
+number of correct predictions: 1577
+validation accuracy: 0.7052772808586762
+validation precision: 0.1984732824427481
+validation recall: 0.49242424242424243
+validation mcc: 0.1603820621775571
+validation f1: 0.28291621327529926
+validation confusion matrix: [[1447  525]
+ [ 134  130]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.7847719141323792
+number of correct predictions: 1505
+validation accuracy: 0.6730769230769231
+validation precision: 0.17158931082981715
+validation recall: 0.4621212121212121
+validation mcc: 0.11325129446451455
+validation f1: 0.25025641025641027
+validation confusion matrix: [[1383  589]
+ [ 142  122]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.7825357781753131
+number of correct predictions: 1549
+validation accuracy: 0.6927549194991055
+validation precision: 0.19124087591240876
+validation recall: 0.4962121212121212
+validation mcc: 0.1506974901208653
+validation f1: 0.27608008429926234
+validation confusion matrix: [[1418  554]
+ [ 133  131]]
+--------------------------------------------------
+averaged training accuracy: 0.784257602862254
+averaged validation accuracy: 0.6891771019677997
+averaged validation precision: 0.18819403693929213
+averaged validation recall: 0.49166666666666664
+averaged validation MCC: 0.14491972071804754

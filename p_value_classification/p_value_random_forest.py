@@ -9,7 +9,7 @@ import pandas as pd
 import pickle
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import matthews_corrcoef, precision_score, recall_score
 from sklearn.metrics import f1_score, confusion_matrix
 from statistics import mean 
@@ -18,9 +18,9 @@ import matplotlib.pyplot as plt
 def get_args():
     parser = argparse.ArgumentParser('python')
     parser.add_argument('-dataset',
-                        default = 'nih',
+                        default = 'nih_nodup',
                         required = False,
-                        choices = ['nih', 'nih_nodup', 'erneg', 'erpos'])
+                        choices = ['nih_nodup', 'erneg', 'erpos'])
 
     parser.add_argument('-use_structual_features',
                          default = 'True',
@@ -64,17 +64,14 @@ if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
     use_structual_features = args.use_structual_features
-    p_value_threshold = args.p_value_th
+    p_value_threshold = float(args.p_value_th)
     print('dataset:', dataset)
     print('threshold for p-value is set to ', p_value_threshold)
     print('Using structual features:', use_structual_features)
     #------------------------------------------
     #           Data pre-processing
     #------------------------------------------
-    if dataset == 'nih':
-        df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv")
-        best_param_dir = './best_param/random_forest_nih.pickle'
-    elif dataset == 'erneg':
+    if dataset == 'erneg':
         df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERneg_new.csv")
         best_param_dir = './best_param/michailidu_erneg.pickle'
     elif dataset == 'erpos':
@@ -85,8 +82,7 @@ if __name__ == "__main__":
         best_param_dir = './best_param/random_forest_nih_nodup.pickle'      
     column_names = [#----non-structual----
                     'wildtype_value', 
-                    'mutant_value', 
-                    'confidence',   
+                    'mutant_value',    
                     'blosum62_mu', 
                     'blosum62_wt',
                     'entropy', 
@@ -95,6 +91,7 @@ if __name__ == "__main__":
                     'malacards_score', 
                     'gene_exp',
                     #----structual----
+                    'confidence',
                     'core', 
                     'nis', 
                     'interface', 
@@ -107,19 +104,20 @@ if __name__ == "__main__":
                     'sheet', 
                     #----label----
                     'p_value']
-    df = df[column_names] #selecting needed columns
     if use_structual_features == 'False':
-        df = df.drop(columns = ['core', 
-                                'nis', 
-                                'interface', 
-                                'hbo', 
-                                'sbr', 
-                                'aromatic', 
-                                'hydrophobic', 
-                                'helix', 
-                                'coil', 
-                                'sheet'])
-
+        column_names = [#----non-structual----
+                        'wildtype_value', 
+                        'mutant_value',    
+                        'blosum62_mu', 
+                        'blosum62_wt',
+                        'entropy', 
+                        'diseases_score', 
+                        'disgenet_score', 
+                        'malacards_score', 
+                        'gene_exp',
+                        #----label----
+                        'p_value']
+    df = df[column_names] #selecting needed columns
     # add a column indicating the prediction result (0 or 1)
     p_values = df['p_value']
     p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
@@ -140,9 +138,7 @@ if __name__ == "__main__":
     X = np.array(df.drop(columns = ['classification_result']))
     y = np.array(df['classification_result'])
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
-    #print(X.shape)
-    #print(y.shape)
-
+    
     #------------------------------------------
     #           Random Forest 
     #------------------------------------------
@@ -152,8 +148,7 @@ if __name__ == "__main__":
     val_precision_records = []
     val_recall_records = []
     val_mcc_records = []
-    fpr_records = []
-    tpr_records = []
+    roc_records = []
     thresholds_records = []
     feature_importance_records = []
 
@@ -165,7 +160,6 @@ if __name__ == "__main__":
 
     # run the model in a cross-validation manner
     for train_index, val_index in skf.split(X, y):
-
         # load the hyper-parameters into the random forest model
         rf = RandomForestClassifier(n_estimators=best_param['n_estimators'],
                                     criterion=best_param['criterion'],
@@ -223,10 +217,7 @@ if __name__ == "__main__":
         fpr, tpr, thresholds = roc_curve(y_val, val_prob[:, 1])
 
         # convert to list so that can be saved in .json file
-        fpr = fpr.tolist()
-        tpr = tpr.tolist()
-        fpr_records.append(fpr)
-        tpr_records.append(tpr)
+        roc_records.append({'fpr':fpr, 'tpr':tpr, 'auc': auc(fpr, tpr)})
 
         feature_importance_records.append(rf.feature_importances_)
         print('--------------------------------------------------')
@@ -242,12 +233,11 @@ if __name__ == "__main__":
     print('averaged validation MCC:', mean(val_mcc_records))
 
     # pickle the ROC info for plotting
-    roc_info = {'fpr_records':fpr_records, 'tpr_records': tpr_records}
-    result_dir = './results/roc_' + dataset + '_use_structual_features_' + use_structual_features + '.pickle'
+    result_dir = './results/roc_' + dataset + '_use_structual_features_' + use_structual_features + '_p_value_' + str(p_value_threshold) +'.pickle'
     pickle_out = open(result_dir,"wb")
-    pickle.dump(roc_info, pickle_out)
+    pickle.dump(roc_records, pickle_out)
 
     # rank the features
     feature_rank(feature_importance_records, column_names)
-    plt.savefig('./figures/random_forest_' + dataset + '_use_structual_features_' + use_structual_features + '.png')
+    plt.savefig('./figures/random_forest_' + dataset + '_use_structual_features_' + use_structual_features + '_p_value_' + str(p_value_threshold) + '.png')
     #plt.show()

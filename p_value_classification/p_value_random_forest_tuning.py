@@ -13,14 +13,9 @@ import pickle
 def get_args():
     parser = argparse.ArgumentParser('python')
     parser.add_argument('-dataset',
-                        default = 'nih',
+                        default = 'nih_nodup',
                         required = False,
-                        choices = ['nih', 'nih_nodup', 'erneg', 'erpos'])
-
-    parser.add_argument('-use_gene_expression',
-                         default = 'True',
-                         required = False,
-                         choices = ['True', 'False'])
+                        choices = ['nih_nodup', 'erneg', 'erpos'])
 
     parser.add_argument('-p_value_th',
                         default = 0.05,
@@ -56,23 +51,17 @@ def report(results, n_top=3):
 if __name__ == "__main__":
     args = get_args()
     dataset = args.dataset
-    use_gene_expression = args.use_gene_expression
-    p_value_threshold = args.p_value_th
+    p_value_threshold = float(args.p_value_th)
     num_search_iter =args.num_search_iter
     scoring_metric = args.scoring_metric
     seed = args.seed
     print('dataset:', dataset)
     print('scoring metric for model selection:', scoring_metric)
     print('threshold for p-value is set to ', p_value_threshold)
-    print('use gene expression feature:', use_gene_expression)
     #-----------------------------------------------------------
     #              Data pre-processing
     #-----------------------------------------------------------
-    if dataset == 'nih':
-        #df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv", delim_whitespace=True)
-        df = pd.read_csv("../../data/output/NIH_SNPs_features_new.csv")
-        best_param_dir = './best_param/random_forest_nih.pickle'
-    elif dataset == 'erneg':
+    if dataset == 'erneg':
         df = pd.read_csv("../../data/output/michailidu_SNPs_features_ERneg_new.csv")
         best_param_dir = './best_param/michailidu_erneg.pickle' 
     elif dataset == 'erpos':
@@ -103,8 +92,6 @@ if __name__ == "__main__":
                     'gene_exp',
                     'p_value']
     df = df[column_names]
-    if use_gene_expression == 'False':
-        df = df.drop(columns = ['gene_exp'])
 
     # add a column indicating the prediction result (0 or 1)
     p_values = df['p_value']
