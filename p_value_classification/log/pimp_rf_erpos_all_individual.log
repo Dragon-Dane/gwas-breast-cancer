@@ -1,0 +1,163 @@
+dataset: erpos
+threshold for p-value is set to  0.05
+Using structural features: True
+number of positive samples: 1320
+number of negative samples: 9860
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 1388, 'min_samples_split': 10, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 117, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+training the random forest...
+training finished.
+training accuracy: 0.8002012522361359
+number of correct predictions: 1554
+validation accuracy: 0.6949910554561717
+validation precision: 0.20057306590257878
+validation recall: 0.5303030303030303
+validation mcc: 0.17224501138483458
+validation f1: 0.291060291060291
+validation confusion matrix: [[1414  558]
+ [ 124  140]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.802772808586762
+number of correct predictions: 1560
+validation accuracy: 0.6976744186046512
+validation precision: 0.20821529745042494
+validation recall: 0.5568181818181818
+validation mcc: 0.18976924530039319
+validation f1: 0.3030927835051547
+validation confusion matrix: [[1413  559]
+ [ 117  147]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8043381037567084
+number of correct predictions: 1562
+validation accuracy: 0.6985688729874776
+validation precision: 0.18461538461538463
+validation recall: 0.45454545454545453
+validation mcc: 0.13202391264408617
+validation f1: 0.26258205689277897
+validation confusion matrix: [[1442  530]
+ [ 144  120]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.7958407871198568
+number of correct predictions: 1557
+validation accuracy: 0.6963327370304114
+validation precision: 0.19619326500732065
+validation recall: 0.5075757575757576
+validation mcc: 0.16055825050978992
+validation f1: 0.28299894403379094
+validation confusion matrix: [[1423  549]
+ [ 130  134]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8105992844364938
+number of correct predictions: 1539
+validation accuracy: 0.6882826475849732
+validation precision: 0.18577648766328012
+validation recall: 0.48484848484848486
+validation mcc: 0.14003096631815007
+validation f1: 0.2686253934942287
+validation confusion matrix: [[1411  561]
+ [ 136  128]]
+--------------------------------------------------
+averaged training accuracy: 0.8027504472271914
+averaged validation accuracy: 0.695169946332737
+averaged validation precision: 0.19507470012779782
+averaged validation recall: 0.5068181818181818
+averaged validation MCC: 0.15892547723145078
+            feature  importance_0  ...  importance_3  importance_4
+0          aromatic      0.000000  ...      0.000000      0.000000
+1       blosum62_mu      0.005367  ...     -0.006261      0.000894
+2       blosum62_wt      0.008945  ...     -0.004919      0.005367
+3              coil     -0.001342  ...      0.014311      0.002236
+4        confidence      0.012970  ...      0.028175      0.005367
+5              core     -0.003578  ...     -0.003578     -0.004919
+6    diseases_score      0.012522  ...      0.005814      0.014311
+7    disgenet_score      0.024597  ...      0.009392      0.039803
+8           entropy      0.021914  ...      0.036673      0.002236
+9          gene_exp      0.000447  ...      0.000000      0.000000
+10              hbo      0.001342  ...      0.000447      0.001789
+11            helix      0.003578  ...      0.004919      0.014758
+12      hydrophobic      0.000894  ...      0.000000      0.000000
+13        interface      0.017442  ...      0.027281      0.008050
+14  malacards_score      0.000447  ...     -0.006708      0.000000
+15     mutant_value     -0.004472  ...     -0.014311     -0.021467
+16              nis     -0.003131  ...     -0.003131     -0.004472
+17              sbr      0.000894  ...      0.002683      0.002236
+18            sheet     -0.001789  ...      0.007156      0.000894
+19   wildtype_value      0.001789  ...     -0.023703      0.015653
+
+[20 rows x 6 columns]
+    importance_0  importance_1  importance_2  importance_3  importance_4
+0       0.000000      0.000000      0.000000      0.000000      0.000000
+1       0.005367      0.023703      0.006708     -0.006261      0.000894
+2       0.008945      0.004472      0.007156     -0.004919      0.005367
+3      -0.001342      0.002236      0.003131      0.014311      0.002236
+4       0.012970      0.008497      0.002683      0.028175      0.005367
+5      -0.003578     -0.004472     -0.000447     -0.003578     -0.004919
+6       0.012522      0.007156      0.009839      0.005814      0.014311
+7       0.024597      0.010733      0.015206      0.009392      0.039803
+8       0.021914      0.030411      0.014311      0.036673      0.002236
+9       0.000447     -0.000447      0.001342      0.000000      0.000000
+10      0.001342     -0.001342      0.000000      0.000447      0.001789
+11      0.003578      0.001342      0.000447      0.004919      0.014758
+12      0.000894      0.000000      0.000000      0.000000      0.000000
+13      0.017442      0.010286      0.010733      0.027281      0.008050
+14      0.000447     -0.000447      0.000000     -0.006708      0.000000
+15     -0.004472      0.020125     -0.008050     -0.014311     -0.021467
+16     -0.003131     -0.008050     -0.001789     -0.003131     -0.004472
+17      0.000894      0.002236      0.005814      0.002683      0.002236
+18     -0.001789      0.007603      0.000000      0.007156      0.000894
+19      0.001789      0.013864      0.002236     -0.023703      0.015653
+            feature  importance_0  ...  avg_importance  std_importance
+0          aromatic      0.000000  ...        0.000000        0.000000
+1       blosum62_mu      0.005367  ...        0.006082        0.011076
+2       blosum62_wt      0.008945  ...        0.004204        0.005382
+3              coil     -0.001342  ...        0.004114        0.005953
+4        confidence      0.012970  ...        0.011538        0.010057
+5              core     -0.003578  ...       -0.003399        0.001749
+6    diseases_score      0.012522  ...        0.009928        0.003555
+7    disgenet_score      0.024597  ...        0.019946        0.012596
+8           entropy      0.021914  ...        0.021109        0.013526
+9          gene_exp      0.000447  ...        0.000268        0.000678
+10              hbo      0.001342  ...        0.000447        0.001225
+11            helix      0.003578  ...        0.005009        0.005731
+12      hydrophobic      0.000894  ...        0.000179        0.000400
+13        interface      0.017442  ...        0.014758        0.007830
+14  malacards_score      0.000447  ...       -0.001342        0.003017
+15     mutant_value     -0.004472  ...       -0.005635        0.015785
+16              nis     -0.003131  ...       -0.004114        0.002396
+17              sbr      0.000894  ...        0.002773        0.001828
+18            sheet     -0.001789  ...        0.002773        0.004318
+19   wildtype_value      0.001789  ...        0.001968        0.015715
+
+[20 rows x 8 columns]
+            feature  avg_importance  std_importance
+8           entropy        0.021109        0.013526
+7    disgenet_score        0.019946        0.012596
+13        interface        0.014758        0.007830
+4        confidence        0.011538        0.010057
+6    diseases_score        0.009928        0.003555
+1       blosum62_mu        0.006082        0.011076
+11            helix        0.005009        0.005731
+2       blosum62_wt        0.004204        0.005382
+3              coil        0.004114        0.005953
+18            sheet        0.002773        0.004318
+17              sbr        0.002773        0.001828
+19   wildtype_value        0.001968        0.015715
+10              hbo        0.000447        0.001225
+9          gene_exp        0.000268        0.000678
+12      hydrophobic        0.000179        0.000400
+0          aromatic        0.000000        0.000000
+14  malacards_score       -0.001342        0.003017
+5              core       -0.003399        0.001749
+16              nis       -0.004114        0.002396
+15     mutant_value       -0.005635        0.015785
+['entropy', 'disgenet_score', 'interface', 'confidence', 'diseases_score', 'blosum62_mu', 'helix', 'blosum62_wt', 'coil', 'sheet', 'sbr', 'wildtype_value', 'hbo', 'gene_exp', 'hydrophobic', 'aromatic', 'malacards_score', 'core', 'nis', 'mutant_value']
+[0.02110912343470479, 0.019946332737030413, 0.01475849731663681, 0.01153846153846152, 0.009928443649373887, 0.006082289803220009, 0.005008944543828231, 0.004203935599284403, 0.004114490161001761, 0.0027728085867620546, 0.0027728085867620546, 0.0019677996422182266, 0.0004472271914132131, 0.0002683363148479279, 0.00017889087656528524, 0.0, -0.0013416815742397282, -0.0033989266547406415, -0.004114490161001805, -0.0056350626118068185]
+[0.013525942607755815, 0.012596414057760416, 0.007829669678001581, 0.01005714421125107, 0.0035553858522990455, 0.011075534216526878, 0.005730793731535353, 0.0053816132223582615, 0.00595333141048077, 0.004317537884131365, 0.001827622248810623, 0.01571543878105152, 0.0012247821053335585, 0.0006782536175358793, 0.0004000121605545019, 0.0, 0.0030167123352486977, 0.0017493387491598976, 0.0023959025466867246, 0.015785282697788814]

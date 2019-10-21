@@ -1,0 +1,105 @@
+dataset: erneg
+threshold for p-value is set to  0.05
+Using structural features: True
+number of positive samples: 864
+number of negative samples: 10315
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 2277, 'min_samples_split': 8, 'min_samples_leaf': 8, 'max_features': None, 'max_depth': 150, 'criterion': 'entropy', 'class_weight': 'balanced', 'bootstrap': False}
+training the random forest...
+training finished.
+training accuracy: 0.8257855305825785
+number of correct predictions: 1638
+validation accuracy: 0.7325581395348837
+validation precision: 0.118491921005386
+validation recall: 0.3815028901734104
+validation mcc: 0.08864853560679002
+validation f1: 0.18082191780821916
+validation confusion matrix: [[1572  491]
+ [ 107   66]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8336128815833613
+number of correct predictions: 1669
+validation accuracy: 0.7464221824686941
+validation precision: 0.13108614232209737
+validation recall: 0.4046242774566474
+validation mcc: 0.11261398876335828
+validation f1: 0.198019801980198
+validation confusion matrix: [[1599  464]
+ [ 103   70]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8234373252823437
+number of correct predictions: 1634
+validation accuracy: 0.7307692307692307
+validation precision: 0.1256544502617801
+validation recall: 0.4161849710982659
+validation mcc: 0.10608033335423056
+validation f1: 0.19302949061662197
+validation confusion matrix: [[1562  501]
+ [ 101   72]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8255618919825561
+number of correct predictions: 1671
+validation accuracy: 0.7473166368515206
+validation precision: 0.13432835820895522
+validation recall: 0.4161849710982659
+validation mcc: 0.11970497810243165
+validation f1: 0.20310296191819466
+validation confusion matrix: [[1599  464]
+ [ 101   72]]
+--------------------------------------------------
+training the random forest...
+training finished.
+training accuracy: 0.8291592128801432
+number of correct predictions: 1665
+validation accuracy: 0.7449664429530202
+validation precision: 0.11730769230769231
+validation recall: 0.3546511627906977
+validation mcc: 0.08336408135466074
+validation f1: 0.1763005780346821
+validation confusion matrix: [[1604  459]
+ [ 111   61]]
+--------------------------------------------------
+averaged training accuracy: 0.8275113684621965
+averaged validation accuracy: 0.7404065265154699
+averaged validation precision: 0.1253737128211822
+averaged validation recall: 0.39462965452345744
+averaged validation MCC: 0.10208238343629425
+                                             feature  ...  importance_4
+0                   core\nnis\ninterface\nconfidence  ...      0.024161
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.009843
+2                    hbo\nsbr\naromatic\nhydrophobic  ...      0.001790
+3                                 helix\ncoil\nsheet  ...      0.026846
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...     -0.005369
+
+[5 rows x 6 columns]
+   importance_0  importance_1  importance_2  importance_3  importance_4
+0      0.024150      0.010733      0.005367      0.021914      0.024161
+1      0.033095      0.050984      0.025939      0.037567      0.009843
+2      0.003578      0.003578      0.000894      0.002236      0.001790
+3      0.015653      0.016995      0.013864      0.012075      0.026846
+4     -0.004919      0.003131      0.013417      0.015206     -0.005369
+                                             feature  ...  std_importance
+0                   core\nnis\ninterface\nconfidence  ...        0.008672
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.015157
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.001166
+3                                 helix\ncoil\nsheet  ...        0.005762
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.009771
+
+[5 rows x 8 columns]
+                                             feature  ...  std_importance
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.015157
+0                   core\nnis\ninterface\nconfidence  ...        0.008672
+3                                 helix\ncoil\nsheet  ...        0.005762
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.009771
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.001166
+
+[5 rows x 3 columns]
+['diseases_score\ndisgenet_score\nmalacards_score\ngene_exp', 'core\nnis\ninterface\nconfidence', 'helix\ncoil\nsheet', 'wildtype_value\nmutant_value\nblosum62_mu\nblosum62_wt\nentropy', 'hbo\nsbr\naromatic\nhydrophobic']
+[0.03148567472275916, 0.017265130686388665, 0.017086479931805364, 0.004292900793603116, 0.002415186914952794]
+[0.015156725542753236, 0.008671897351425165, 0.005761993657769416, 0.009771253936658805, 0.0011661184530908089]
