@@ -1,0 +1,76 @@
+dataset: erpos
+Using structural features: True
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 611, 'min_samples_split': 0.08888888888888889, 'min_samples_leaf': 0.12777777777777777, 'max_features': 'sqrt', 'max_depth': 100, 'criterion': 'mse', 'bootstrap': True}
+training the random forest...
+training finished.
+mean squared error for training:  0.05584282910978993
+r2 score for training:  0.40641929685719047
+mean squared error for validation:  0.08457028529224189
+r2 score for validation: 0.08352883256101973
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05496878720045169
+r2 score for training:  0.4103895945487561
+mean squared error for validation:  0.08777766695400718
+r2 score for validation: 0.08408068194546747
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05614513653961516
+r2 score for training:  0.4029485819607608
+mean squared error for validation:  0.08383167325548194
+r2 score for validation: 0.09382501476418059
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05511522047203714
+r2 score for training:  0.41278115240486657
+mean squared error for validation:  0.08609914620179562
+r2 score for validation: 0.07748144527398193
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05523318810922647
+r2 score for training:  0.4095483703524886
+mean squared error for validation:  0.08597770449221284
+r2 score for validation: 0.0905877036469721
+--------------------------------------------------
+averaged training mse: 0.05546103228622408
+averaged training r2 score: 0.4084173992248125
+averaged validation mse: 0.0856512952391479
+averaged validation r2 score: 0.08590073563832437
+                                             feature  ...  importance_4
+0                   core\nnis\ninterface\nconfidence  ...      0.054054
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.045289
+2                    hbo\nsbr\naromatic\nhydrophobic  ...      0.013887
+3                                 helix\ncoil\nsheet  ...      0.020305
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.085650
+
+[5 rows x 6 columns]
+   importance_0  importance_1  importance_2  importance_3  importance_4
+0      0.064468      0.055025      0.066016      0.055633      0.054054
+1      0.045315      0.034252      0.060463      0.041064      0.045289
+2      0.012430      0.015430      0.018027      0.015649      0.013887
+3      0.014889      0.029377      0.023507      0.025145      0.020305
+4      0.076401      0.076326      0.097224      0.069838      0.085650
+                                             feature  ...  std_importance
+0                   core\nnis\ninterface\nconfidence  ...        0.005716
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.009616
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.002096
+3                                 helix\ncoil\nsheet  ...        0.005430
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.010635
+
+[5 rows x 8 columns]
+                                             feature  ...  std_importance
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.010635
+0                   core\nnis\ninterface\nconfidence  ...        0.005716
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.009616
+3                                 helix\ncoil\nsheet  ...        0.005430
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.002096
+
+[5 rows x 3 columns]
+['wildtype_value\nmutant_value\nblosum62_mu\nblosum62_wt\nentropy', 'core\nnis\ninterface\nconfidence', 'diseases_score\ndisgenet_score\nmalacards_score\ngene_exp', 'helix\ncoil\nsheet', 'hbo\nsbr\naromatic\nhydrophobic']
+[0.0810878984381133, 0.059039265257277915, 0.04527644168487906, 0.022644630669072054, 0.015084361513400915]
+[0.010634798238466952, 0.005716327575321449, 0.009616290745879594, 0.005430263103692429, 0.0020961801837983294]

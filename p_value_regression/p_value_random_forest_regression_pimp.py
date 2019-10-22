@@ -5,15 +5,15 @@ import argparse
 import numpy as np
 import pandas as pd
 import pickle
-from sklearn.model_selection import StratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_curve, auc
-from sklearn.metrics import matthews_corrcoef, precision_score, recall_score
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.model_selection import KFold
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
 from statistics import mean 
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from time import time
 from rfpimp import *
+import matplotlib.pyplot as plt
 
 def get_args():
     parser = argparse.ArgumentParser('python')
@@ -32,15 +32,14 @@ def get_args():
                          required = False,
                          choices = ['all_individual', 'non_struct_individual', 'all_5_groups', 'all_3_groups'])
 
-    parser.add_argument('-p_value_th',
-                        default = 0.05,
-                        required = False)
-
     parser.add_argument('-show_std',
                          default = 'False',
                          required = False,
                          choices = ['True', 'False'])
 
+    parser.add_argument('-seed',
+                        default = 42,
+                        required = False)
     return parser.parse_args()
 
 def np_array_to_df(data, column_names):
@@ -84,6 +83,18 @@ def avg_importance(importance_list):
     print(plot_importances)
     print(plot_std)
     return plot_features, plot_importances, plot_std  
+
+def scatter_gen(y_vals, y_preds):
+    """
+    Generate data for scatter plot of the labels and predicted values
+    """
+    assert len(y_vals) == len(y_preds)
+    tup_list = [(y_vals[i], y_preds[i]) for i in range(0, len(y_vals))]
+    tup_list = sorted(tup_list, key = lambda x: x[0], reverse=False) # sort according to value of labels
+    x = [tup[0] for tup in tup_list]
+    y = [tup[1] for tup in tup_list]
+    return x, y
+
 
 def gen_grouping(option):
     """
@@ -151,10 +162,9 @@ if __name__ == "__main__":
     dataset = args.dataset
     grouping = args.grouping
     use_structual_features = args.use_structual_features
-    p_value_threshold = float(args.p_value_th)
     show_std = args.show_std
+    seed = args.seed
     print('dataset:', dataset)
-    print('threshold for p-value is set to ', p_value_threshold)
     print('Using structural features:', use_structual_features)
     grouping_list = gen_grouping(grouping)
     
@@ -208,38 +218,28 @@ if __name__ == "__main__":
                         #----label----
                         'p_value']
     df = df[column_names] #selecting needed columns
-    # add a column indicating the prediction result (0 or 1)
+
     p_values = df['p_value']
     p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
-    p_values_binary = [int(p_value <= p_value_threshold) for p_value in p_values]
     df = df.drop(columns = ['p_value'])
-    df['classification_result'] = p_values_binary 
-
-    #calculate class weight
-    df_pos = df[df['classification_result'] == 1]
-    df_neg = df[df['classification_result'] == 0]
-    num_pos = df_pos.shape[0]
-    num_neg = df_neg.shape[0]
-    print('number of positive samples:', num_pos)
-    print('number of negative samples:', num_neg)
+    df['p_value'] = p_values 
 
     # data and label
-    X = np.array(df.drop(columns = ['classification_result']))
-    y = np.array(df['classification_result'])
-    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
+    X = np.array(df.drop(columns = ['p_value']))
+    y = np.array(df['p_value'])
+    kf = KFold(n_splits=5, shuffle=True, random_state=seed)
     
     #------------------------------------------
     #           Random Forest 
     #------------------------------------------
     # list contains dictionarys for each fold
-    train_acc_records = []
-    val_acc_records = []
-    val_precision_records = []
-    val_recall_records = []
-    val_mcc_records = []
-    roc_records = []
-    thresholds_records = []
+    train_mse_records = []
+    train_r2_records = []
+    val_mse_records = []
+    val_r2_records = []
     feature_importance_records = []
+    y_val_list = []
+    y_val_pred_list = []
     importance_list = []
 
     # load pre-selected hyper parameters
@@ -253,17 +253,21 @@ if __name__ == "__main__":
     column_names_y.append(column_names[-1]) 
 
     # run the model in a cross-validation manner
-    for train_index, val_index in skf.split(X, y):
+    for train_index, val_index in kf.split(X):
         # load the hyper-parameters into the random forest model
-        rf = RandomForestClassifier(n_estimators=best_param['n_estimators'],
+        rf = RandomForestRegressor(#n_estimators=best_param['n_estimators'],
+                                    n_estimators=1000,
                                     criterion=best_param['criterion'],
-                                    max_features=best_param['max_features'],
-                                    max_depth=best_param['max_depth'],
-                                    min_samples_split=best_param['min_samples_split'],
-                                    min_samples_leaf=best_param['min_samples_leaf'], 
+                                    #max_features=best_param['max_features'],
+                                    max_features='sqrt',
+                                    #max_depth=best_param['max_depth'],
+                                    #max_depth = 15,
+                                    #min_samples_split=best_param['min_samples_split'],
+                                    min_samples_split=4,
+                                    #min_samples_leaf=best_param['min_samples_leaf'], 
+                                    min_samples_leaf = 4,
                                     bootstrap=best_param['bootstrap'],
-                                    random_state=123,
-                                    class_weight='balanced',
+                                    random_state=seed,
                                     n_jobs = -1)
 
         X_train, X_val = X[train_index], X[val_index]
@@ -274,44 +278,28 @@ if __name__ == "__main__":
         rf.fit(X_train, y_train)
         print('training finished.')
 
-        # training performance
-        train_acc = rf.score(X_train, y_train)
-        train_acc_records.append(train_acc)
-        print('training accuracy:', train_acc)
+        y_train_pred = rf.predict(X_train)
+        y_val_pred = rf.predict(X_val)
 
-        # validation performance
-        predictions = rf.predict(X_val)
-        num_correct = np.sum(predictions == y_val)
-        print('number of correct predictions:',num_correct)
+        # validation labels and predictions to generate scatter plot
+        y_val_list.extend(y_val)
+        y_val_pred_list.extend(y_val_pred)
 
-        val_acc = rf.score(X_val, y_val)
-        val_acc_records.append(val_acc)
-        print('validation accuracy:', val_acc)
+        mse_train = mean_squared_error(y_train, y_train_pred)
+        train_mse_records.append(mse_train)
+        print('mean squared error for training: ', mse_train)
 
-        val_precision = precision_score(y_val,predictions)
-        val_precision_records.append(val_precision)        
-        print('validation precision:', val_precision)
+        r2_train = r2_score(y_train, y_train_pred)
+        train_r2_records.append(r2_train)
+        print('r2 score for training: ', r2_train)
 
-        val_recall = recall_score(y_val,predictions)
-        val_recall_records.append(val_recall)        
-        print('validation recall:', val_recall)
+        mse_val = mean_squared_error(y_val, y_val_pred)
+        val_mse_records.append(mse_val)
+        print('mean squared error for validation: ', mse_val)
 
-        val_mcc = matthews_corrcoef(y_val, predictions)
-        val_mcc_records.append(val_mcc)
-        print('validation mcc:', val_mcc)
-
-        val_f1 = f1_score(y_val, predictions)
-        print('validation f1:', val_f1)
-
-        val_cm = confusion_matrix(y_val, predictions)
-        print('validation confusion matrix:', val_cm)
-
-        # output probabilities for val data
-        val_prob = rf.predict_proba(X_val)
-        fpr, tpr, thresholds = roc_curve(y_val, val_prob[:, 1])
-
-        # convert to list so that can be saved in .json file
-        roc_records.append({'fpr':fpr, 'tpr':tpr, 'auc': auc(fpr, tpr)})
+        r2_val = r2_score(y_val, y_val_pred)
+        val_r2_records.append(r2_val)
+        print('r2 score for validation:', r2_val)
 
         #feature_importance_records.append(rf.feature_importances_)
         df_X_val = np_array_to_df(X_val, column_names_X)
@@ -324,23 +312,16 @@ if __name__ == "__main__":
     #           Post-processing 
     #------------------------------------------
     # averaged validation metrics over folds
-    print('averaged training accuracy:', mean(train_acc_records))
-    print('averaged validation accuracy:', mean(val_acc_records))
-    print('averaged validation precision:', mean(val_precision_records))
-    print('averaged validation recall:', mean(val_recall_records))
-    print('averaged validation MCC:', mean(val_mcc_records))
-
-    # pickle the ROC info for plotting
-    result_dir = './results/roc_' + dataset + '_use_structual_features_' + use_structual_features + '_p_value_' + str(p_value_threshold) + '_grouping_' + grouping + '_showstd_' + show_std +'.pickle'
-    pickle_out = open(result_dir,"wb")
-    pickle.dump(roc_records, pickle_out)
+    print('averaged training mse:', mean(train_mse_records))
+    print('averaged training r2 score:', mean(train_r2_records))
+    print('averaged validation mse:', mean(val_mse_records))
+    print('averaged validation r2 score:', mean(val_r2_records))
 
     # process the permutation feature ranking data
     plot_features, plot_importances, plot_std = avg_importance(importance_list)
 
     # bar plot of averaged importances
     y_pos = np.arange(len(plot_features))
-    #plt.figure(figsize=(16,8))
     fig, ax = plt.subplots()
     if show_std == 'True':
         ax.barh(y_pos, plot_importances, xerr=plot_std, align='center', color='lightseagreen')
@@ -351,7 +332,13 @@ if __name__ == "__main__":
     ax.invert_yaxis()  # labels read top-to-bottom
     ax.set_xlabel('Importance')
     ax.set_title('Permutation feature importances')
-  
-    #plt.show()
-    fig.savefig('./figures_permutation_importance/random_forest_' + dataset + '_use_structual_features_' + use_structual_features + '_p_value_' + str(p_value_threshold) + '_grouping_' + grouping + '_showstd_' + show_std + '.png', bbox_inches='tight')
-    
+    fig.savefig('./figures_permutation_importance/regression_' + dataset + '_use_structual_features_' + use_structual_features + '_grouping_' + grouping + '_showstd_' + show_std + '.png', bbox_inches='tight')
+    plt.close('all')
+
+    # scatter plot of the predicted p-values and their true values
+    p_x, p_y = scatter_gen(y_val_list, y_val_pred_list)
+    plt.scatter(p_x, p_y, c="g", alpha=0.5, marker='.')
+    plt.xlabel("True p-values")
+    plt.ylabel("Predicted p-values")
+    plt.savefig('./figures_scatter/regression_' + dataset + '_use_structual_features_' + use_structual_features + '_grouping_' + grouping + '_showstd_' + show_std + '.png', bbox_inches='tight')
+    plt.show()

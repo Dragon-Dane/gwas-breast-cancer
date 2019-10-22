@@ -1,0 +1,68 @@
+dataset: erneg
+Using structural features: True
+hyper-parameters selected from randomized search:
+{'random_state': 42, 'n_jobs': -1, 'n_estimators': 1500, 'min_samples_split': 0.05, 'min_samples_leaf': 0.4, 'max_features': 'auto', 'max_depth': 5, 'criterion': 'mse', 'bootstrap': True}
+training the random forest...
+training finished.
+mean squared error for training:  0.05277967191113927
+r2 score for training:  0.4089305588124663
+mean squared error for validation:  0.08140043443245772
+r2 score for validation: 0.08623891752686053
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.052920287300459314
+r2 score for training:  0.40808266658576253
+mean squared error for validation:  0.08153477890767377
+r2 score for validation: 0.07933889438047903
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05313421879205529
+r2 score for training:  0.40573531736828927
+mean squared error for validation:  0.08037149183409865
+r2 score for validation: 0.09095679373689347
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05263228322585857
+r2 score for training:  0.4112755046757288
+mean squared error for validation:  0.08236103692803386
+r2 score for validation: 0.07062201595641993
+--------------------------------------------------
+training the random forest...
+training finished.
+mean squared error for training:  0.05272108857186275
+r2 score for training:  0.40585850269460866
+mean squared error for validation:  0.08297396579974818
+r2 score for validation: 0.09142766683934078
+--------------------------------------------------
+averaged training mse: 0.05283750996027504
+averaged training r2 score: 0.4079765100273711
+averaged validation mse: 0.08172834158040243
+averaged validation r2 score: 0.08371685768799875
+                                             feature  ...  importance_4
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...      0.071636
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.044669
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.089828
+
+[3 rows x 6 columns]
+   importance_0  importance_1  importance_2  importance_3  importance_4
+0      0.064923      0.078743      0.073158      0.059803      0.071636
+1      0.049746      0.043085      0.057078      0.037070      0.044669
+2      0.080082      0.080774      0.077996      0.073284      0.089828
+                                             feature  ...  std_importance
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007387
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.007520
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.006032
+
+[3 rows x 8 columns]
+                                             feature  ...  std_importance
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.006032
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007387
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.007520
+
+[3 rows x 3 columns]
+['wildtype_value\nmutant_value\nblosum62_mu\nblosum62_wt\nentropy', 'core\nnis\ninterface\nconfidence\nhbo\nsbr\naromatic\nhydrophobic\nhelix\ncoil\nsheet', 'diseases_score\ndisgenet_score\nmalacards_score\ngene_exp']
+[0.08039275647934914, 0.06965269208312881, 0.046329818824950554]
+[0.006031905137598508, 0.007386594740149108, 0.007520480424205856]

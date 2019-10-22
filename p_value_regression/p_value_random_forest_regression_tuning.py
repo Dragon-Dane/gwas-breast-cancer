@@ -23,7 +23,7 @@ def get_args():
                          choices = ['True', 'False'])
 
     parser.add_argument('-num_search_iter',
-                        default = 500,
+                        default = 200,
                         required = False)
 
     parser.add_argument('-scoring_metric',
@@ -107,21 +107,28 @@ if __name__ == "__main__":
     #   Random forest with randomized hyper-paramter searching
     #-----------------------------------------------------------
      # Number of trees in random forest
-    n_estimators = [int(x) for x in np.linspace(start = 500, stop = 2500, num = 10)]
+    n_estimators = [int(x) for x in np.linspace(start = 500, stop = 1500, num = 10)]
+    
     # which metric to measure the quality of split
-    criterions = ['mse', 'mae']
+    criterions = ['mse']
+    
     # Number of features to consider at every split
-    max_features = ['sqrt', 'log2']
-    max_features.append(None)
+    max_features = ['sqrt', 'log2', 'auto']
+    
     # Maximum number of levels in tree
-    max_depth = [int(x) for x in np.linspace(5, 150, num = 10)]
+    max_depth = [int(x) for x in np.linspace(5, 100, num = 5)]
     max_depth.append(None)
+    
     # Minimum number of samples required to split a node
-    min_samples_split = [2, 4, 6, 8, 10, 12]
+    #min_samples_split = [2, 4, 6, 8, 10, 12]
+    min_samples_split = np.linspace(0.05, 0.4, num = 10, endpoint=True)
+    
     # Minimum number of samples required at each leaf node
-    min_samples_leaf = [1, 2, 4, 6, 8]
+    #min_samples_leaf = [1, 2, 4, 6, 8]
+    min_samples_leaf = np.linspace(0.05, 0.4, num = 10, endpoint=True)
+
     # Method of selecting samples for training each tree
-    bootstrap = [True, False]
+    bootstrap = [True]
 
     param_grid = {'n_estimators': n_estimators,
                   'criterion': criterions,
@@ -145,7 +152,7 @@ if __name__ == "__main__":
                                             cv=5, 
                                             iid=False,
                                             random_state=seed,
-                                            verbose=0)
+                                            verbose=1)
 
     print('total number of iterations for randomized search: ',num_search_iter)
     start = time()
