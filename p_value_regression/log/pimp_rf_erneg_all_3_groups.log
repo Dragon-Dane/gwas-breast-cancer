@@ -1,5 +1,10 @@
 dataset: erneg
 Using structural features: True
+max of neg-log p_values: 22.38452349811031
+min of neg-log p_values: 0.00010000500033334731
+max of p_values: 0.9999
+min of p_values: 1.8989999999999996e-10
+[0.5167 0.931  0.9697 ... 0.6962 0.6947 0.7337]
 hyper-parameters selected from randomized search:
 {'random_state': 42, 'n_jobs': -1, 'n_estimators': 1500, 'min_samples_split': 0.05, 'min_samples_leaf': 0.4, 'max_features': 'auto', 'max_depth': 5, 'criterion': 'mse', 'bootstrap': True}
 training the random forest...
@@ -18,15 +23,15 @@ r2 score for validation: 0.07933889438047903
 --------------------------------------------------
 training the random forest...
 training finished.
-mean squared error for training:  0.05313421879205529
+mean squared error for training:  0.053134218792055286
 r2 score for training:  0.40573531736828927
 mean squared error for validation:  0.08037149183409865
 r2 score for validation: 0.09095679373689347
 --------------------------------------------------
 training the random forest...
 training finished.
-mean squared error for training:  0.05263228322585857
-r2 score for training:  0.4112755046757288
+mean squared error for training:  0.05263228322585856
+r2 score for training:  0.41127550467572893
 mean squared error for validation:  0.08236103692803386
 r2 score for validation: 0.07062201595641993
 --------------------------------------------------
@@ -42,27 +47,27 @@ averaged training r2 score: 0.4079765100273711
 averaged validation mse: 0.08172834158040243
 averaged validation r2 score: 0.08371685768799875
                                              feature  ...  importance_4
-0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...      0.071636
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.044669
-2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.089828
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...      0.068609
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.049252
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.095358
 
 [3 rows x 6 columns]
    importance_0  importance_1  importance_2  importance_3  importance_4
-0      0.064923      0.078743      0.073158      0.059803      0.071636
-1      0.049746      0.043085      0.057078      0.037070      0.044669
-2      0.080082      0.080774      0.077996      0.073284      0.089828
+0      0.065085      0.062294      0.080699      0.063013      0.068609
+1      0.050240      0.047693      0.060259      0.043905      0.049252
+2      0.089527      0.075366      0.082262      0.066907      0.095358
                                              feature  ...  std_importance
-0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007387
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.007520
-2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.006032
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007542
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.006082
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.011257
 
 [3 rows x 8 columns]
                                              feature  ...  std_importance
-2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.006032
-0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007387
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.007520
+2  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.011257
+0  core\nnis\ninterface\nconfidence\nhbo\nsbr\nar...  ...        0.007542
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.006082
 
 [3 rows x 3 columns]
 ['wildtype_value\nmutant_value\nblosum62_mu\nblosum62_wt\nentropy', 'core\nnis\ninterface\nconfidence\nhbo\nsbr\naromatic\nhydrophobic\nhelix\ncoil\nsheet', 'diseases_score\ndisgenet_score\nmalacards_score\ngene_exp']
-[0.08039275647934914, 0.06965269208312881, 0.046329818824950554]
-[0.006031905137598508, 0.007386594740149108, 0.007520480424205856]
+[0.08188414190958333, 0.06794021659276483, 0.05026985682065954]
+[0.011257393874446448, 0.0075421503403371205, 0.006082033412657171]

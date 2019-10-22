@@ -1,13 +1,18 @@
 dataset: erpos
 Using structural features: True
+max of neg-log p_values: 44.372551335035496
+min of neg-log p_values: -0.0
+max of p_values: 1.0
+min of p_values: 5.361000000000092e-20
+[0.5705 0.5036 0.4958 ... 0.693  0.6911 0.1552]
 hyper-parameters selected from randomized search:
 {'random_state': 42, 'n_jobs': -1, 'n_estimators': 611, 'min_samples_split': 0.08888888888888889, 'min_samples_leaf': 0.12777777777777777, 'max_features': 'sqrt', 'max_depth': 100, 'criterion': 'mse', 'bootstrap': True}
 training the random forest...
 training finished.
 mean squared error for training:  0.05584282910978993
 r2 score for training:  0.40641929685719047
-mean squared error for validation:  0.08457028529224189
-r2 score for validation: 0.08352883256101973
+mean squared error for validation:  0.08457028529224188
+r2 score for validation: 0.08352883256101984
 --------------------------------------------------
 training the random forest...
 training finished.
@@ -25,7 +30,7 @@ r2 score for validation: 0.09382501476418059
 --------------------------------------------------
 training the random forest...
 training finished.
-mean squared error for training:  0.05511522047203714
+mean squared error for training:  0.055115220472037145
 r2 score for training:  0.41278115240486657
 mean squared error for validation:  0.08609914620179562
 r2 score for validation: 0.07748144527398193
@@ -40,37 +45,37 @@ r2 score for validation: 0.0905877036469721
 averaged training mse: 0.05546103228622408
 averaged training r2 score: 0.4084173992248125
 averaged validation mse: 0.0856512952391479
-averaged validation r2 score: 0.08590073563832437
+averaged validation r2 score: 0.08590073563832439
                                              feature  ...  importance_4
-0                   core\nnis\ninterface\nconfidence  ...      0.054054
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.045289
-2                    hbo\nsbr\naromatic\nhydrophobic  ...      0.013887
-3                                 helix\ncoil\nsheet  ...      0.020305
-4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.085650
+0                   core\nnis\ninterface\nconfidence  ...      0.056314
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...      0.046091
+2                    hbo\nsbr\naromatic\nhydrophobic  ...      0.014174
+3                                 helix\ncoil\nsheet  ...      0.029837
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...      0.085697
 
 [5 rows x 6 columns]
    importance_0  importance_1  importance_2  importance_3  importance_4
-0      0.064468      0.055025      0.066016      0.055633      0.054054
-1      0.045315      0.034252      0.060463      0.041064      0.045289
-2      0.012430      0.015430      0.018027      0.015649      0.013887
-3      0.014889      0.029377      0.023507      0.025145      0.020305
-4      0.076401      0.076326      0.097224      0.069838      0.085650
+0      0.059837      0.056517      0.060495      0.046245      0.056314
+1      0.050074      0.033094      0.052734      0.038116      0.046091
+2      0.014742      0.015911      0.017246      0.013508      0.014174
+3      0.015466      0.027779      0.023045      0.022340      0.029837
+4      0.080643      0.072372      0.090586      0.070050      0.085697
                                              feature  ...  std_importance
-0                   core\nnis\ninterface\nconfidence  ...        0.005716
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.009616
-2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.002096
-3                                 helix\ncoil\nsheet  ...        0.005430
-4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.010635
+0                   core\nnis\ninterface\nconfidence  ...        0.005709
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.008233
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.001482
+3                                 helix\ncoil\nsheet  ...        0.005576
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.008689
 
 [5 rows x 8 columns]
                                              feature  ...  std_importance
-4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.010635
-0                   core\nnis\ninterface\nconfidence  ...        0.005716
-1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.009616
-3                                 helix\ncoil\nsheet  ...        0.005430
-2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.002096
+4  wildtype_value\nmutant_value\nblosum62_mu\nblo...  ...        0.008689
+0                   core\nnis\ninterface\nconfidence  ...        0.005709
+1  diseases_score\ndisgenet_score\nmalacards_scor...  ...        0.008233
+3                                 helix\ncoil\nsheet  ...        0.005576
+2                    hbo\nsbr\naromatic\nhydrophobic  ...        0.001482
 
 [5 rows x 3 columns]
 ['wildtype_value\nmutant_value\nblosum62_mu\nblosum62_wt\nentropy', 'core\nnis\ninterface\nconfidence', 'diseases_score\ndisgenet_score\nmalacards_score\ngene_exp', 'helix\ncoil\nsheet', 'hbo\nsbr\naromatic\nhydrophobic']
-[0.0810878984381133, 0.059039265257277915, 0.04527644168487906, 0.022644630669072054, 0.015084361513400915]
-[0.010634798238466952, 0.005716327575321449, 0.009616290745879594, 0.005430263103692429, 0.0020961801837983294]
+[0.07986961007347977, 0.05588140953294194, 0.04402174281684797, 0.023693630300621393, 0.015116356136360132]
+[0.008689374771425798, 0.005709081877479506, 0.008232706703771115, 0.0055762219716265805, 0.0014817961766321172]

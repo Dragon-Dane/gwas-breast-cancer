@@ -219,14 +219,19 @@ if __name__ == "__main__":
                         'p_value']
     df = df[column_names] #selecting needed columns
 
-    p_values = df['p_value']
+    p_values = list(df['p_value'])
+    print('max of neg-log p_values:', max(p_values))
+    print('min of neg-log p_values:', min(p_values))
     p_values = np.exp([p_value * (-1) for p_value in p_values]) # convert to original values from -log values  
+    print('max of p_values:', max(p_values))
+    print('min of p_values:', min(p_values))
     df = df.drop(columns = ['p_value'])
     df['p_value'] = p_values 
 
     # data and label
     X = np.array(df.drop(columns = ['p_value']))
     y = np.array(df['p_value'])
+    print(y)
     kf = KFold(n_splits=5, shuffle=True, random_state=seed)
     
     #------------------------------------------
@@ -337,8 +342,13 @@ if __name__ == "__main__":
 
     # scatter plot of the predicted p-values and their true values
     p_x, p_y = scatter_gen(y_val_list, y_val_pred_list)
-    plt.scatter(p_x, p_y, c="g", alpha=0.5, marker='.')
-    plt.xlabel("True p-values")
-    plt.ylabel("Predicted p-values")
-    plt.savefig('./figures_scatter/regression_' + dataset + '_use_structual_features_' + use_structual_features + '_grouping_' + grouping + '_showstd_' + show_std + '.png', bbox_inches='tight')
+    fig = plt.figure()
+    ax = plt.gca()
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    ax.scatter(p_x, p_y, c="g", alpha=0.5, marker='.')
+    ax.set_xlabel("True p-values")
+    ax.set_ylabel("Predicted p-values")
+    fig.savefig('./figures_scatter/regression_' + dataset + '_use_structual_features_' + use_structual_features + '_grouping_' + grouping + '_showstd_' + show_std + '.png', bbox_inches='tight')
+    
     plt.show()
