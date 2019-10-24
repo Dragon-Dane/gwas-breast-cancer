@@ -8,14 +8,6 @@ from scipy import interp
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 
-def get_args():
-    parser = argparse.ArgumentParser('python')
-    parser.add_argument('-dataset',
-                        default = 'nih',
-                        required = False,
-                        choices = ['nih', 'nih_nodup', 'erneg', 'erpos'])
-    return parser.parse_args()
-
 def roc_process(roc_list, mean_fpr):
     '''
     Average the data over folds
@@ -39,21 +31,9 @@ def roc_process(roc_list, mean_fpr):
 
 
 if __name__=="__main__":
-    args = get_args()
-    dataset = args.dataset
-    if dataset == 'nih':
-        result_dir_0 = './results/roc_nih_use_structual_features_True_p_value_0.05.pickle'
-        result_dir_1 = './results/roc_nih_use_structual_features_False_p_value_0.05.pickle'
-    elif dataset == 'erneg':
-        result_dir_0 = './results/roc_erneg_use_structual_features_True_p_value_0.05.pickle'
-        result_dir_1 = './results/roc_erneg_use_structual_features_False_p_value_0.05.pickle'
-    elif dataset == 'erpos':
-        result_dir_0 = './results/roc_erpos_use_structual_features_True_p_value_0.05.pickle'
-        result_dir_1 = './results/roc_erpos_use_structual_features_False_p_value_0.05.pickle'
-    elif dataset == 'nih_nodup':
-        result_dir_0 = './results/roc_nih_nodup_use_structual_features_True_p_value_0.05.pickle'
-        result_dir_1 = './results/roc_nih_nodup_use_structual_features_False_p_value_0.05.pickle'   
-
+    result_dir_0 = './results/roc_erneg_use_structual_features_True_p_value_0.05.pickle' 
+    result_dir_1 = './results/roc_erpos_use_structual_features_True_p_value_0.05.pickle'
+    
     result_file_0 = open(result_dir_0, 'rb')
     roc_list_0 = pickle.load(result_file_0)    
     result_file_1 = open(result_dir_1, 'rb')
@@ -64,10 +44,12 @@ if __name__=="__main__":
     mean_tpr_1, mean_auc_1 = roc_process(roc_list_1, mean_fpr)
 
     # plot roc curve of random
+
+    plt.plot(mean_fpr, mean_tpr_1, dashes = [6, 1, 1, 1, 1, 1], color='g', label='ER+', lw=2, alpha=.8)
+    plt.plot(mean_fpr, mean_tpr_0, dashes = [6, 1, 1, 1], color='b', label='ER-', lw=2, alpha=.8)
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Random', alpha=.8)
-    
-    plt.plot(mean_fpr, mean_tpr_0, dashes = [6, 1, 1, 1], color='b', label='with structual features', lw=2, alpha=.8)
-    plt.plot(mean_fpr, mean_tpr_1, dashes = [6, 1, 1, 1, 1, 1], color='g', label='without structual features', lw=2, alpha=.8)
+    print('AUC for ER+:', mean_auc_1)
+    print('AUC for ER-:', mean_auc_0)
 
     plt.xlim([-0.05, 1.05])
     plt.ylim([-0.05, 1.05])

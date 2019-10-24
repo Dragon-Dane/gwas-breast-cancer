@@ -54,6 +54,8 @@ if __name__ == "__main__":
 
     df_corr = df.corr(method='pearson')
     #print(df_corr)
+    df_corr = df_corr[abs(df_corr)>0.5]
+
 
     fig, ax = plt.subplots()
     im = ax.imshow(df_corr)
