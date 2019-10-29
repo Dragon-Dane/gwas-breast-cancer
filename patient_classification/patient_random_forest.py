@@ -16,7 +16,7 @@ from statistics import mean
 def get_args():
     parser = argparse.ArgumentParser('python')
     parser.add_argument('-data_dir',
-                        default='../../data/patient_output/patients_all.csv',
+                        default='../../data/patient_output/patients_latent_truncated_svd.csv',
                         required=False,
                         help='directory of SNP dataframe')
     return parser.parse_args()
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     df = pd.read_csv(data_dir)
 
     # report class ratio
-    df_pos = df[df['class'] == 1]
+    df_pos = pd.concat([df[df['class'] == 1], df[df['class'] == 2], df[df['class'] == 3]])
     df_neg = df[df['class'] == 0]
     num_pos = df_pos.shape[0]
     num_neg = df_neg.shape[0]
@@ -38,6 +38,8 @@ if __name__ == "__main__":
     # data and label
     X = np.array(df.drop(columns = ['class']))
     y = np.array(df['class'])
+    y[np.where(y==2)] = 1 # you are 1 if you are sick
+    y[np.where(y==3)] = 1 # you are 1 if you are sick
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     
     #------------------------------------------
@@ -57,6 +59,8 @@ if __name__ == "__main__":
     for train_index, val_index in skf.split(X, y):
         # load the hyper-parameters into the random forest model
         rf = RandomForestClassifier(n_estimators=1000,
+                                    min_samples_split = 0.05,
+                                    min_samples_leaf = 0.05,
                                     class_weight='balanced',
                                     n_jobs = -1)
 
