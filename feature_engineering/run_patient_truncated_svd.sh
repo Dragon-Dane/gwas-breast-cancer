@@ -9,7 +9,7 @@
 
 source activate pytorch
 cd /work/wshi6/deeplearning-data/gwas-breast-cancer-prj/gwas-breast-cancer/feature_engineering/
-python patient_truncated_svd.py > ./log/patient_truncated_svd.log 2>&1
+python patient_truncated_svd.py > ./log/patient_truncated_svd_256.log 2>&1
 
 
 

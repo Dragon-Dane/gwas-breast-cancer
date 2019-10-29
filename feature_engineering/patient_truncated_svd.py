@@ -15,7 +15,7 @@ def get_args():
                         help='directory of SNP dataframe')
 
     parser.add_argument('-out_dir',
-                        default='../../data/patient_output/patients_latent_truncated_svd.csv',
+                        default='../../data/patient_output/patients_latent_truncated_svd_256.csv',
                         required=False,
                         help='csv file containing all features of snps of the patients.')
                     
@@ -32,7 +32,7 @@ if __name__=="__main__":
     
     
     # perform T-SNE
-    svd = TruncatedSVD(n_components=128)
+    svd = TruncatedSVD(n_components=256)
     print('begin to fit...')
     X_out = svd.fit_transform(X)
     print('training finished.')
