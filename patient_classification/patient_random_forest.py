@@ -16,7 +16,7 @@ from statistics import mean
 def get_args():
     parser = argparse.ArgumentParser('python')
     parser.add_argument('-data_dir',
-                        default='../../data/patient_output/patients_latent_truncated_svd.csv',
+                        default='../../data/patient_output/patients_latent_truncated_svd_256.csv',
                         required=False,
                         help='directory of SNP dataframe')
     return parser.parse_args()
